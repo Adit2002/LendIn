@@ -8,7 +8,7 @@ const investor=new Schema({
     investor_aadhar: String,
     investor_address :String,
     investor_sex: String,
-    investor_pan_image: String,
-    investor_aadhar_image: String
+    investor_pan_image: Buffer,
+    investor_aadhar_image: Buffer
 });
 module.exports=model("Investor_Details",investor);

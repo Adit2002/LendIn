@@ -8,7 +8,11 @@ const http=require("http");
 const cors=require("cors");
 const jwt=require("jsonwebtoken");
 const Investor = require("./Investor");
+const bcrypt=require('bcrypt');
 const server=http.createServer(app);
+const BorrowerSchema=require('./borrower.js');
+const InvestorSchema=require('./Investor.js');
+const { spawn } = require('child_process');
 mongoose
 .connect(process.env.MONGOOSE_API_KEY)
 .then((p)=>{
@@ -27,18 +31,25 @@ app.use(
     })
 );
 
-const verifyToken = async(req,res,next)=>{
-    const token=req.headers.authorization;
-    if(!token){
-        return res.status(401).json({message: "Token unavailable"});
+const verifyToken = (req, res, next) => {
+    // Extract token from the Authorization header
+    const token = req.headers.authorization;
+    // console.log(token);
+
+    // Check if token is available
+    if (!token) {
+        console.log("Unauthorized Access: Token unavailable");
+        return res.status(401).json({ message: "Token unavailable" });
     }
-    await jwt.verify(token, process.env.JWT_ACCESS_TOKEN, (err,decoded)=>{
-        if(err){
-            return res.status(403).json({message: "Token Invalid"});
+    jwt.verify(token, process.env.JWT_ACCESS_KEY, (err, decoded) => {
+        if (err) {
+            console.log("Forbidden: Token invalid");
+            return res.status(403).json({ message: "Token Invalid" });
         }
-        req.user=decoded;
+        req.user = decoded;
+        console.log("Token Verified");
         next();
-    })
+    });
 };
 
 
@@ -50,6 +61,7 @@ app.post("/Register_Inv",async(req,res)=>{
         console.log("Email already in use");
         return res.send({is_true:false, message:"Email already in Use, Login for more details"});
     }
+    console.log(reg_det);
     const password_hash=await bcrypt.hash(reg_det.password,10);
     try{
         InvestorSchema.create({
@@ -64,25 +76,33 @@ app.post("/Register_Inv",async(req,res)=>{
             investor_pan_image: reg_det.pan_image,
             investor_aadhar_image: reg_det.aadhar_image
         });
+        console.log("Successfull");
     }
     catch(err){
+        console.log(err);
         console.log("Error Occured while registration");
         return res.send({is_true:false, message: "Error occured"});
     }
     return res.send({is_true: true, message: "Successfully registered"});
 });
 
-app.post("/Register_Borrower",async(req,res)=>{
+app.post("/Register_Borrower", async (req, res) => {
     console.log("Register as Borrower");
-    const reg_det=req.body;
-    const is_Present=await BorrowerSchema.findOne({borrower_email: reg_det.email});
-    if(is_Present){
-        console.log("Email already in use");
-        return res.send({is_true:false, message:"Email already in Use, Login for more details"});
-    }
-    const password_hash=await bcrypt.hash(reg_det.password,10);
-    try{
-        InvestorSchema.create({
+    const reg_det = req.body;
+    // console.log(req.body);
+    try {
+        // Check if the email is already in use
+        const isPresent = await BorrowerSchema.findOne({ borrower_email: reg_det.email });
+        if (isPresent) {
+            console.log("Email already in use");
+            return res.send({ is_true: false, message: "Email already in Use, Login for more details" });
+        }
+
+        // Hash the password
+        const password_hash = await bcrypt.hash(reg_det.password, 10);
+
+        // Create a new borrower document
+        await BorrowerSchema.create({
             borrower_name: reg_det.name,
             borrower_contact_number: reg_det.contact_number,
             borrower_email: reg_det.email,
@@ -91,22 +111,26 @@ app.post("/Register_Borrower",async(req,res)=>{
             borrower_aadhar: reg_det.aadhar,
             borrower_pan: reg_det.pan,
             borrower_sex: reg_det.sex,
-            borrower_pan_image: reg_det.pan_image,
-            borrower_aadhar_image: reg_det.aadhar_image
+            // borrower_pan_image: reg_det.pan_image,
+            // borrower_aadhar_image: reg_det.aadhar_image
         });
+
+        // Send success response
+        console.log("Success");
+        return res.send({ is_true: true, message: "Successfully registered" });
+    } catch (err) {
+        console.log("Error occurred while registration:", err);
+        return res.status(500).send({ is_true: false, message: "Error occurred" });
     }
-    catch(err){
-        console.log("Error Occured while registration");
-        return res.send({is_true:false, message: "Error occured"});
-    }
-    return res.send({is_true: true, message: "Successfully registered"});
 });
 
 app.post("/Login",async(req,res)=>{
     console.log("Login Page Entered");
     const user=req.body;
-    const email=req.email;
-    if(user.role==0){
+    const email=req.body.email;
+    console.log(email);
+    if(user.role===0){
+        console.log('idhar');
         const user_real=await InvestorSchema.findOne({investor_email: email});
         if(!user_real){
             return res.send({istrue: false, message: "Email is not registered, Register!"});
@@ -115,7 +139,8 @@ app.post("/Login",async(req,res)=>{
             user.password,user_real.investor_password
         );
         if(pass_value){
-            const token=jwt.sign(user,process.env.JWT_ACCESS_TOKEN,{expiresIn:'2h'});
+            // console.log(process.env.JWT_ACCESS_KEY);
+            const token=jwt.sign(user,process.env.JWT_ACCESS_KEY,{expiresIn:'2h'});
             console.log("Successful Login");
             return res.send({istrue: true, Jtoken:token, message:"Login Success"});
         }
@@ -124,13 +149,13 @@ app.post("/Login",async(req,res)=>{
         }
     }
     if(user.role==1){
-        const user_real=await BorrowerSchema.findOne({borrower_email: user.email});
+        const user_real=await BorrowerSchema.findOne({borrower_email: email});
         if(!user_real){
             return res.send({istrue: false,message: "Email is not registered, Register!"});
         }
         const pass_value=await bcrypt.compare(user.password,user_real.borrower_password);
         if(pass_value){
-            const token=jwt.sign(user,process.env.JWT_ACCESS_TOKEN,{expiresIn: '2h'});
+            const token=jwt.sign(user,process.env.JWT_ACCESS_KEY,{expiresIn: '2h'});
             console.log("Successful Login");
             return res.send({istrue:true, Jtoken: token, message: "Successfull Login"});
         }
@@ -139,9 +164,38 @@ app.post("/Login",async(req,res)=>{
         }
     }
 });
-
-app.get("/DshbInv",verifyToken,async(req,res)=>{
+app.get("/checktoken",verifyToken,async(req,res)=>{
+    return res.send({is_true: true});
+})
+app.get("/DshbInv",async(req,res)=>{
     const user=InvestorSchema.findOne({investor_email:req.headers.email});
     return res.send({inv_name: user.investor_name });
 });
 
+app.get("/DshbBrw",async(req,res)=>{
+    const user=InvestorSchema.findOne({borrower_email: req.headers.email});
+    return res.send({brw_name: user.borrower_name});
+});
+
+app.get("/CreateTicket", async (req, res) => {
+    console.log('Create Ticket Entered');
+    const pythonProcess = spawn('python', ['./gen_model/model.py', '--disable=warning']);
+
+    pythonProcess.stdout.on('data', (data) => {
+        console.log(`${data}`);
+        // res.send({is_true:true}); 
+        // Assuming the Python script sends the response as JSON // Parse the data received from Python
+        // return res.json(); // Send the parsed JSON data as response
+    });
+
+    pythonProcess.stderr.on('data', (data) => {
+        // console.error(`Python stderr: ${data}`);
+        // You may want to handle stderr data appropriately
+    });
+
+    pythonProcess.on('close', (code) => {
+        console.log(`Python process exited with code ${code}`);
+        // You may want to handle the closing of the process appropriately
+    });
+    return res.send({is_true:true});
+});

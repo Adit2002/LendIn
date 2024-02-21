@@ -8,7 +8,7 @@ const borrower=new Schema({
     borrower_aadhar: String,
     borrower_pan: String,
     borrower_sex: String,
-    borrower_pan_image: String,
-    borrower_aadhar_image: String
+    borrower_pan_image: Buffer,
+    borrower_aadhar_image: Buffer
 });
-model.exports=model("Borrower_details",borrower);
+module.exports=model("Borrower_details",borrower);
