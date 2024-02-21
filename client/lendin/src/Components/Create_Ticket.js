@@ -1,12 +1,18 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
 const Create_Ticket = () => {
+    function generateRandomString(length) {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '';
+        for (let i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return result;
+    }
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const funcheck = async () => {
+    const email=localStorage.getItem('Email');
+    const funcheck = async () => {
             try {
                 const checkToken = await axios.get('http://localhost:3001/checktoken', {
                     headers: {
@@ -18,35 +24,56 @@ const Create_Ticket = () => {
                     navigate('/Home');
                 } else {
                     console.log('Token is valid');
-                    function_model_run(); // Call the next function after token check
                 }
             } catch (error) {
                 console.error('Error checking token:', error);
                 navigate('/Home');
             }
-        };
+    };
 
-        const function_model_run = async () => {
-            try {
-                const serverresponse = await axios.get('http://localhost:3001/CreateTicket', {});
-                
-                if (serverresponse.data.is_true) {
-                    console.log('Ticket created successfully');
-                    console.log(serverresponse.data.message);
-                } else {
-                    console.log("Failed to create ticket");
-                }
-            } catch (error) {
-                console.error('Error creating ticket:', error);
+    const HandleSubmit=async(e)=>{
+        e.preventDefault();
+        try{
+            console.log(e);
+            const currentDate = new Date();
+            const currentDateTimeString = currentDate.toISOString();
+            const tid=generateRandomString(10);
+            const serverresponse=await axios.post('http://localhost:3001/CreateTicket',{
+                id: tid,
+                mail: email,
+                amount: e.target.amount.value,
+                duration: e.target.duration.value,
+                type: e.target.type.value,
+                Description: e.target.Description.value,
+                Date: currentDateTimeString
+            });
+            if(serverresponse.data.is_true===true){
+                console.log('Successfully Created');
+                navigate(`/${email}/DsbBrw`);
             }
-        };
-
-        funcheck();
-    }, [navigate]);
-
+            else{
+                console.log('Error');
+            }
+        }
+        catch(err){
+            console.log(err);
+        }
+    }
+    funcheck();
     return (
         <div>
-            <h1>YOu</h1>
+            <h1>Add Ticket Details</h1>
+            <form onSubmit={HandleSubmit}>
+            <label for="amount">Loan Amount</label>
+            <input type="text" id="amount" name="amount"/><br/>
+            <label for="duration">Duration (In Months)</label>
+            <input type="text" id="duration" name="duration"/><br/>
+            <label for="type">Loan Type</label>
+            <input type="text" id="type" name="type"/><br/>
+            <label for="Description">Description:</label>
+            <input type="text" id="Description" name="Description"/><br/>
+            <button>Submit</button>
+            </form>
         </div>
     );
 };
