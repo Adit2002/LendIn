@@ -13,6 +13,8 @@ const server=http.createServer(app);
 const BorrowerSchema=require('./borrower.js');
 const InvestorSchema=require('./Investor.js');
 const { spawn } = require('child_process');
+const TicketSchema=require('./Ticket.js');
+const Loan_typeSchema=require('./Loan_type.js');
 mongoose
 .connect(process.env.MONGOOSE_API_KEY)
 .then((p)=>{
@@ -30,7 +32,6 @@ app.use(
         credentials: true,
     })
 );
-
 const verifyToken = (req, res, next) => {
     // Extract token from the Authorization header
     const token = req.headers.authorization;
@@ -177,7 +178,7 @@ app.get("/DshbBrw",async(req,res)=>{
     return res.send({brw_name: user.borrower_name});
 });
 
-app.get("/CreateTicket", async (req, res) => {
+app.get("/GiveScoreToTicket", async (req, res) => {
     console.log('Create Ticket Entered');
     const pythonProcess = spawn('python', ['./gen_model/model.py', '--disable=warning']);
 
@@ -198,4 +199,66 @@ app.get("/CreateTicket", async (req, res) => {
         // You may want to handle the closing of the process appropriately
     });
     return res.send({is_true:true});
+});
+const create_loan_type=async()=>{
+    await Loan_typeSchema.create({
+        loan_type: "Education",
+        loan_intrest: 7
+    });
+    await Loan_typeSchema.create({
+        loan_type: "Home",
+        loan_intrest: 8
+    });
+    await Loan_typeSchema.create({
+        loan_type: "Car",
+        loan_intrest: 8
+    });
+    await Loan_typeSchema.create({
+        loan_type: "Personal",
+        loan_intrest: 9
+    });
+}
+create_loan_type();
+app.post("/CreateTicket",async(req,res)=>{
+
+    // console.log(req.body);
+    function create_instlmnt(loan_amount, loan_duration, loan_interest) {
+        let monthly_interest_rate = loan_interest / 12 / 100;
+        let installment = (loan_amount * monthly_interest_rate) / (1 - Math.pow(1 + monthly_interest_rate, -loan_duration));
+        return installment;
+    }
+    const ticket=req.body;
+    const intrest=await Loan_typeSchema.findOne({loan_type: ticket.type});
+    let instlmnt=create_instlmnt(ticket.amount,ticket.duration,intrest.loan_intrest);
+    try{
+        await TicketSchema.create({
+            Ticket_id: ticket.id,
+            borrower_mail: ticket.mail,
+            loan_amount: ticket.amount,
+            loan_duration: ticket.duration,
+            loan_type: ticket.type,
+            loan_intrest: intrest.loan_intrest,
+            loan_installment: instlmnt,
+            Description: ticket.Description,
+            views: ticket.views,
+            Date_created: ticket.Date
+        });
+        console.log('Ticket Created');
+    }
+    catch(err){
+        console.log(err);
+        return res.send({is_true:false,message:err});
+    }
+    return res.send({is_true: true});
+});
+
+app.get('/SeeTicket',async(req,res)=>{
+    try{
+        const get_all_data=await TicketSchema.find({});
+        return res.send({is_true: true, message: "Got all Data",JsonData: get_all_data});
+    }
+    catch(err){
+        console.log(err);
+        return res.send({is_true:false,message: "Error"});
+    }
 });
