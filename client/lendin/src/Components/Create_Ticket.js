@@ -49,11 +49,23 @@ const Create_Ticket = () => {
             });
             if(serverresponse.data.is_true===true){
                 console.log('Successfully Created');
-                navigate(`/${email}/DsbBrw`);
+                Give_Score();
             }
             else{
                 console.log('Error');
             }
+        }
+        catch(err){
+            console.log(err);
+        }
+    }
+    
+    const Give_Score=async()=>{
+        try{
+            const serverresponse=await axios.get('http://localhost:3001//GiveScoreToTicket',{
+
+            });
+
         }
         catch(err){
             console.log(err);

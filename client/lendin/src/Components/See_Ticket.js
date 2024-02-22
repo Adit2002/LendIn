@@ -7,7 +7,7 @@ const See_Ticket=()=>{
             const serverresponse=await axios.get('http://localhost:3001/SeeTicket');
             if(serverresponse.data.is_true===true){
                 console.log('Data fetched');
-                // console.log(serverresponse.data.JsonData);
+                console.log(serverresponse.data.JsonData);
             }
             else{
                 console.log('Data UnFetched');
@@ -17,6 +17,12 @@ const See_Ticket=()=>{
             console.log(err);
         }
     }
+    // const HandleOnClick_Card=()=>{
+    //     e.preventDefault();
+    //     try{
+
+    //     }
+    // }
     const funcheck = async () => {
         try {
             const checkToken = await axios.get('http://localhost:3001/checktoken', {

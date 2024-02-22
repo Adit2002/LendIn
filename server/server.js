@@ -15,6 +15,8 @@ const InvestorSchema=require('./Investor.js');
 const { spawn } = require('child_process');
 const TicketSchema=require('./Ticket.js');
 const Loan_typeSchema=require('./Loan_type.js');
+const AdtnlSchema=require("./borrower_addtnl.js");
+const BorrowerMLSchema=require("./Borrower_info_ML.js");
 mongoose
 .connect(process.env.MONGOOSE_API_KEY)
 .then((p)=>{
@@ -177,29 +179,6 @@ app.get("/DshbBrw",async(req,res)=>{
     const user=InvestorSchema.findOne({borrower_email: req.headers.email});
     return res.send({brw_name: user.borrower_name});
 });
-
-app.get("/GiveScoreToTicket", async (req, res) => {
-    console.log('Create Ticket Entered');
-    const pythonProcess = spawn('python', ['./gen_model/model.py', '--disable=warning']);
-
-    pythonProcess.stdout.on('data', (data) => {
-        console.log(`${data}`);
-        // res.send({is_true:true}); 
-        // Assuming the Python script sends the response as JSON // Parse the data received from Python
-        // return res.json(); // Send the parsed JSON data as response
-    });
-
-    pythonProcess.stderr.on('data', (data) => {
-        // console.error(`Python stderr: ${data}`);
-        // You may want to handle stderr data appropriately
-    });
-
-    pythonProcess.on('close', (code) => {
-        console.log(`Python process exited with code ${code}`);
-        // You may want to handle the closing of the process appropriately
-    });
-    return res.send({is_true:true});
-});
 const create_loan_type=async()=>{
     await Loan_typeSchema.create({
         loan_type: "Education",
@@ -219,6 +198,90 @@ const create_loan_type=async()=>{
     });
 }
 create_loan_type();
+const Update_Score = async (tid) => {
+    try {
+        const tdet = await TicketSchema.findOne({ Ticket_id: tid });
+        const Adtnl = await AdtnlSchema.findOne({ email: tdet.borrower_mail });
+        const brw_ml = await BorrowerMLSchema.findOne({ tid: tid });
+        console.log('here');
+        console.log(Adtnl);
+        console.log(tdet);
+        if (brw_ml) {
+            await BorrowerMLSchema.updateOne(
+                { tid: tid },
+                {
+                    $set: {
+                        loan_amt: tdet.loan_amount,
+                    }
+                });
+        }
+        else {
+            await BorrowerMLSchema.create({
+                tid: tid,
+                loan_amt: tdet.loan_amount,
+                mortdue: 0,
+                cur_prop_value: Adtnl.curr_prop_value,
+                year_of_job: Adtnl.year_of_job,
+                num_derog_rep: 0,
+                num_delinq_cr_lines: 0,
+                age_oldest_cr_line: 0,
+                num_rec_cr_inq: 0,
+                num_cr_inq: 0,
+                debt_to_inc: 0
+            });
+        }
+        console.log("Created/Updated_Ml_Data");
+        Create_Score(tid);
+    } catch (err) {
+        console.log(err);
+    }
+}
+const Create_Score = async (tid) => {
+    try {
+        const ml_data = await BorrowerMLSchema.findOne({ tid: tid });
+
+        if (!ml_data) {
+            console.log("No ML data found for tid:", tid);
+            return;
+        }
+
+        console.log(ml_data);
+        console.log('Create Ticket Entered');
+        const pythonProcess = spawn('python', [
+            './gen_model/model.py',
+            '--disable=warning',
+            ml_data.loan_amt,
+            ml_data.mortdue, 
+            ml_data.cur_prop_value, 
+            ml_data.year_of_job, 
+            ml_data.num_derog_rep, 
+            ml_data.num_delinq_cr_lines, 
+            ml_data.age_oldest_cr_line, 
+            ml_data.num_rec_cr_inq, 
+            ml_data.num_cr_inq, 
+            ml_data.debt_to_inc 
+        ]);
+
+        pythonProcess.stdout.on('data', async (data) => {
+            console.log(`${data}`);
+            await TicketSchema.updateOne({ Ticket_id: tid }, { $set: { TicketScore: `${data[0]}` } });
+        });
+
+        pythonProcess.stderr.on('data', (data) => {
+            console.log(`${data}`);
+            // Handle stderr data if needed
+        });
+
+        pythonProcess.on('close', (code) => {
+            console.log(`Python process exited with code ${code}`);
+        });
+    } catch (err) {
+        console.log(err);
+    }
+    // console.log(ticdet);
+}
+
+
 app.post("/CreateTicket",async(req,res)=>{
 
     // console.log(req.body);
@@ -243,6 +306,7 @@ app.post("/CreateTicket",async(req,res)=>{
             views: ticket.views,
             Date_created: ticket.Date
         });
+        Update_Score(ticket.id);
         console.log('Ticket Created');
     }
     catch(err){
@@ -261,4 +325,45 @@ app.get('/SeeTicket',async(req,res)=>{
         console.log(err);
         return res.send({is_true:false,message: "Error"});
     }
+});
+app.get('/Open_Ticket',async(req,res)=>{
+    try{
+        const ticketDetails=await TicketSchema.findOne({id:req.body.tid});
+        const user_detail=await BorrowerSchema.findOne({email: ticketDetails.borrower_mail});
+        return res.send({is_true: true,JsonData_ticket:ticketDetails,JsonData_user: user_detail});
+    }catch(err){
+        console.log(err);
+        return res.send({is_true:false});
+    }
+});
+app.post('/brw_adtnl_info',async(req,res)=>{
+    const detail=req.body;
+    console.log(detail);
+    try{
+        const already=await AdtnlSchema.findOne({email:detail.email});
+        if(already){
+            await AdtnlSchema.updateOne({email: detail.email},{
+                $set:{
+                annual_income: detail.income,
+                year_of_job: detail.yoj,
+                curr_prop_value:detail.val_cur_prop
+            }
+        });
+        }
+        else{
+            await AdtnlSchema.create({
+                email: detail.email,
+                annual_income: detail.income,
+                year_of_job: detail.yoj,
+                curr_prop_value: detail.val_cur_prop
+            });
+        }
+
+        console.log('Update/Creation Successfull');
+        return res.send({is_true: true});
+    }
+    catch(err){
+        console.log(err);
+    }
+    return res.send({is_true:false});
 });

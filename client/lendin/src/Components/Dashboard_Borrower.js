@@ -26,7 +26,8 @@ const Dashboard_Borrower=()=>{
         <div>
         {/* <script>funcheck()</script> */}
         <h1> HI </h1>
-        <a href={`/${localStorage.Email}/CreateTicket`}> Link to Create Ticket</a>
+        <a href={`/${localStorage.Email}/CreateTicket`}> Link to Create Ticket</a><br/>
+        <a href={`/${localStorage.Email}/Brw_addtnl_info`}>Add Additional Info</a>
         <button onClick={HandleLogout}>LogOut</button>
         </div>
     )

@@ -1,5 +1,7 @@
 const {Schema,model}= require('mongoose');
 const Borrower_info_ML=new Schema({
+    tid: String,
+    loan_amt: Number,
     mortdue: Number,
     cur_prop_value: Number,
     year_of_job: Number,
