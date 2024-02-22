@@ -1,17 +1,21 @@
+import Hero from './Hero'
+import './css/page.css'
+
 const Home = () => {
-    return (
-      <div>
-        <h1>LendIn : Lend/Borrow Money instantly</h1>
-        <br/>
+  return (
+    <div className="page">
+      <div className="home section">
+        <Hero></Hero>
+        <h1 className="header">LendIn : Lend/Borrow Money instantly</h1>
+
         <a href="/register_inv">New to Investing, Register here</a>
-        <br/>
-        <br/>
+
         <a href="/register_brw">Want Instant Cash! Register-Apply-Get_Money</a>
-        <br/>
-        <h2>Login As borrower</h2>
+
+        <h2 className="subheader">Login As borrower</h2>
         <a href="/Login">Already a User, Login</a>
       </div>
-    )
-  }
-  export default Home;
-  
+    </div>
+  )
+}
+export default Home
