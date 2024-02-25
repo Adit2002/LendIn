@@ -1,53 +1,60 @@
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-const See_Ticket=()=>{
-    const navigate=useNavigate();
-    const handle_Data=async()=>{
-        try{
-            const serverresponse=await axios.get('http://localhost:3001/SeeTicket');
-            if(serverresponse.data.is_true===true){
-                console.log('Data fetched');
-                console.log(serverresponse.data.JsonData);
-            }
-            else{
-                console.log('Data UnFetched');
-            }
-        }
-        catch(err){
-            console.log(err);
-        }
-    }
-    // const HandleOnClick_Card=()=>{
-    //     e.preventDefault();
-    //     try{
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import TicketCard from './TicketCard'
 
-    //     }
-    // }
+const See_Ticket = () => {
+  const navigate = useNavigate()
+  const [ticketDataArray, setTicketDataArray] = useState([])
+
+  useEffect(() => {
     const funcheck = async () => {
-        try {
-            const checkToken = await axios.get('http://localhost:3001/checktoken', {
-                headers: {
-                    Authorization: localStorage.getItem('token'),
-                },
-            });
-            
-            if (!checkToken.data.is_true) {
-                navigate('/Home');
-            } else {
-                console.log('Token is valid');
-                handle_Data();
+      try {
+        const checkToken = await axios.get('http://localhost:3001/checktoken', {
+          headers: {
+            Authorization: localStorage.getItem('token'),
+          },
+        })
 
-            }
-        } catch (error) {
-            console.error('Error checking token:', error);
-            navigate('/Home');
+        if (!checkToken.data.is_true) {
+          navigate('/Home')
+        } else {
+          console.log('Token is valid')
+          handleData()
         }
-    };
-    funcheck();
-    return (
-        <div>
-            Yaa
-        </div>
-    );
+      } catch (error) {
+        console.error('Error checking token:', error)
+        navigate('/Home')
+      }
+    }
+
+    funcheck()
+  }, []) // Empty dependency array means this effect runs only once after the initial render
+
+  const handleData = async () => {
+    try {
+      const serverResponse = await axios.get('http://localhost:3001/SeeTicket')
+      if (serverResponse.data.is_true === true) {
+        console.log('Data fetched')
+        setTicketDataArray(serverResponse.data.JsonData)
+      } else {
+        console.log('Data UnFetched')
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  return (
+    <div className="page">
+      <div className="section">
+        {ticketDataArray.length > 0 &&
+          ticketDataArray.map((ticket, index) => (
+            <TicketCard key={index} ticket={ticket} />
+          ))}
+      </div>
+    </div>
+  )
 }
-export default See_Ticket;
+
+export default See_Ticket
