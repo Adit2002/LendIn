@@ -71,9 +71,19 @@ const Create_Ticket = () => {
             console.log(err);
         }
     }
+    const check_if_data_present=async()=>{
+        const serverres=await axios.post('http://localhost:3001/Checking_for_data',{
+            email : localStorage.getItem('Email')
+        });
+        if(serverres.data.is_true===false){
+            navigate(`/${localStorage.getItem('Email')}/Brw_addtnl_info`);
+        }
+    }
     funcheck();
+    check_if_data_present();
     return (
         <div>
+            <br/><br/><br/><br/>
             <h1>Add Ticket Details</h1>
             <form onSubmit={HandleSubmit}>
             <label for="amount">Loan Amount</label>

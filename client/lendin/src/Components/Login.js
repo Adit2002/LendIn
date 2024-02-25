@@ -36,6 +36,7 @@ const Login=()=>{
     };
     return(
         <div>
+            <br/><br/><br/><br/><br/><br/><br/><br/>
             <form onSubmit={Login_Submit}>
                 <input type="radio" id="investor" name="role" value="investor"/>
                 <label for="investor">Investor</label><br/>
