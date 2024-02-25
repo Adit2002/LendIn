@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import navLogo from '../images/navbar_logo.jpg'
-import './css/App.css'
+import './css/Navbar.css'
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false)
   const navigate = useNavigate()
-  //   const isLoggedIn = localStorage.getItem('token')
-  const isLoggedIn = false
+  const isLoggedIn = localStorage.getItem('token')
+  const role = localStorage.getItem('Role')
+  // const isLoggedIn = false
   const toggleMenu = () => {
     setMenuOpen(!menuOpen)
   }
@@ -20,7 +21,7 @@ const Navbar = () => {
       <div className="nav-top">
         <NavLink to="/" className="logo">
           <img src={navLogo} alt="Logo" />
-          <h1 className="Logo_header">LOGO</h1>
+          <h1 className="Logo_header">LendIn</h1>
         </NavLink>
         <div className="toggle">
           <div className="menu-icon" onClick={toggleMenu}>
@@ -44,7 +45,11 @@ const Navbar = () => {
         {isLoggedIn ? (
           <>
             <li>
-              <NavLink to={`/${localStorage.getItem('UserName')}/Dashboard`}>
+              <NavLink
+                to={`/${localStorage.getItem('Email')}/${
+                  role == 1 ? 'DsbBrw' : 'DsbInv'
+                }`}
+              >
                 Dashboard
               </NavLink>
             </li>

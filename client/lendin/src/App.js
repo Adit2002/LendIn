@@ -14,8 +14,9 @@ import Create_Ticket from './Components/Create_Ticket.js'
 import See_Ticket from './Components/See_Ticket.js'
 import Open_Ticket from './Components/Open_Ticket.js'
 import Transaction_init from './Components/Transaction_init.js'
-import Borrower_addtnl_info from "./Components/Borrower_addtnl_info.js";
+import Borrower_addtnl_info from './Components/Borrower_addtnl_info.js'
 import Navbar from './Components/Navbar.js'
+import './Components/css/App.css'
 function App() {
   return (
     <>
@@ -29,7 +30,10 @@ function App() {
           <Route path="/:id/DsbInv" element={<Dashboard_Investor />} />
           <Route path="/:id/DsbBrw" element={<Dashboard_Borrower />} />
           <Route path="/:id/CreateTicket" element={<Create_Ticket />} />
-          <Route path="/:id/Brw_addtnl_info" element={<Borrower_addtnl_info/>}/>
+          <Route
+            path="/:id/Brw_addtnl_info"
+            element={<Borrower_addtnl_info />}
+          />
           <Route path="/:id/See_Ticket" element={<See_Ticket />} />
           <Route path="/:id/Open_Ticket" element={<Open_Ticket />} />
           <Route path="/:id/Transaction_init" element={<Transaction_init />} />
