@@ -51,7 +51,7 @@ a:hover {
   font-weight: bold;
   text-transform: uppercase;
   color: #fff;
-  background-color: #394756; /* Blue color, change to your desired button color */
+  background-color: #394756; 
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -59,14 +59,14 @@ a:hover {
 }
 
 .btn:hover {
-  background-color: #000000; /* Darker shade of blue on hover */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow on hover */
+  background-color: #000000; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
 }
 
 .btn:active {
   transform: translateY(
     1px
-  ); /* Add a slight downward movement when button is clicked */
+  ); 
 }
 .info-form {
   max-width: 400px;

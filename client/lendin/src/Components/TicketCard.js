@@ -1,10 +1,15 @@
 import React from 'react'
 import './css/TicketCard.css' // Import your CSS file
+import { useNavigate } from 'react-router-dom'
 const Pay = (e) => {
   console.log('pay money to ticket id ' + e.target.value)
   console.log()
 }
 const TicketCard = ({ ticket }) => {
+  const navigate = useNavigate()
+  const Pay = (e) => {
+    navigate(`/${localStorage.getItem('Email')}/Open_Ticket`)
+  }
   return (
     <div className="card">
       <div className="card-header">
