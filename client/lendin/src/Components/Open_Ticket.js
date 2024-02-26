@@ -7,6 +7,7 @@ const Open_Ticket=()=>{
             const serverresponse=await axios.get('http://localhost:3001/Open_Ticket',{
                 tid: localStorage.getItem('tid')
             });
+            console.log(serverresponse);
         }catch(err){
             console.log(err);
         }

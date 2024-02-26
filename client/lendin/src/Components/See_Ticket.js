@@ -44,17 +44,24 @@ const See_Ticket = () => {
       console.log(err)
     }
   }
-
+  const HandleClick = (ticket_details) => {
+    localStorage.setItem("TID", ticket_details.Ticket_id);
+    navigate(`/${localStorage.getItem('Email')}/Open_Ticket`);
+  };
+  
   return (
     <div className="page">
       <div className="section">
         {ticketDataArray.length > 0 &&
           ticketDataArray.map((ticket, index) => (
-            <TicketCard key={index} ticket={ticket} />
+            <div key={index}>
+              <TicketCard ticket={ticket} />
+              <button onClick={() => HandleClick(ticket)}>Open</button>
+            </div>
           ))}
       </div>
     </div>
-  )
+  );  
 }
 
 export default See_Ticket

@@ -15,8 +15,7 @@ const Home = () => {
                 New to Investing, Register here
               </a>
               <a href="/register_brw" className="hero-link">
-                Want Instant Cash! Register-Apply-Get_Money
-              </a>
+                Want Instant Cash! Register here              </a>
               <h2 className="subheader">Login As borrower</h2>
               <a href="/Login" className="hero-link">
                 Already a User, Login
