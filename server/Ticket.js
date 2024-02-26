@@ -9,9 +9,7 @@ const Ticket=new Schema({
     loan_installment: Number,
     Description: String,
     views: Number,
-    TicketScore: Number,
+    TicketScore: String,
     Date_created: Date
 });
 module.exports=model("Ticket_Schema",Ticket);
-// TicketScore 1 represents Bad Loan (defaulter),
-//  Score 0 represents Good Loan. (No Risk)

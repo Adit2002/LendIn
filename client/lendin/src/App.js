@@ -1,8 +1,7 @@
 import {
   BrowserRouter as Router,
   Routes,
-  Route,
-  BrowserRouter,
+  Route
 } from 'react-router-dom'
 import Home from './Components/Home'
 import Register_Investor from './Components/Register_Investor.js'

@@ -1,7 +1,6 @@
 import React from 'react'
 import './css/TicketCard.css' // Import your CSS file
 const Pay = (e) => {
-  // console.log(e)
   console.log('pay money to ticket id ' + e.target.value)
   console.log()
 }
