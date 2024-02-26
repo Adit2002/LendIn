@@ -15,11 +15,11 @@ const Dashboard_Borrower = () => {
     } else {
       console.log('True')
     }
-  }
-  const HandleLogout = () => {
-    localStorage.clear()
-    navigate('/Login')
-  }
+    }
+    const HandleLogout=()=>{
+        localStorage.clear();
+        navigate('/Login');
+    }
   funcheck()
   return (
     <div className="page">

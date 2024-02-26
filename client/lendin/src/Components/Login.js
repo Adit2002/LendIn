@@ -25,11 +25,13 @@ const Login = () => {
         } else {
           navigate(`/${e.target.Email.value}/DsbBrw`)
         }
-      } else {
+      }
+      else {
         console.log('Invalid Credentials')
       }
-    } catch (err) {
-      console.log(err)
+    }
+    catch(err){
+        console.log(err);
     }
   }
   return (
@@ -54,4 +56,4 @@ const Login = () => {
     </div>
   )
 }
-export default Login
+export default Login;

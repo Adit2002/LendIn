@@ -281,7 +281,13 @@ const Create_Score = async (tid) => {
     // console.log(ticdet);
 }
 
-
+app.post('/Checking_for_data',async(req,res)=>{
+    const id=AdtnlSchema.findOne({email: req.body.email});
+    if(id){
+        return res.send({is_true: true});
+    }
+    return res.send({is_true: false});
+});
 app.post("/CreateTicket",async(req,res)=>{
 
     // console.log(req.body);

@@ -60,8 +60,17 @@ const Create_Ticket = () => {
     } catch (err) {
       console.log(err)
     }
-  }
-
+}
+    const check_if_data_present=async()=>{
+        const serverres=await axios.post('http://localhost:3001/Checking_for_data',{
+            email : localStorage.getItem('Email')
+        });
+        if(serverres.data.is_true===false){
+            navigate(`/${localStorage.getItem('Email')}/Brw_addtnl_info`);
+        }
+    }
+    funcheck();
+    check_if_data_present();
   const Give_Score = async () => {
     try {
       const serverresponse = await axios.get(
@@ -72,7 +81,6 @@ const Create_Ticket = () => {
       console.log(err)
     }
   }
-  funcheck()
   return (
     <div className="page">
       <div className="section">
@@ -97,4 +105,4 @@ const Create_Ticket = () => {
   )
 }
 
-export default Create_Ticket
+export default Create_Ticket;
