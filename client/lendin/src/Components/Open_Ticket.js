@@ -11,11 +11,7 @@ const Open_Ticket=()=>{
         }catch(err){
             console.log(err);
         }
-      )
-    } catch (err) {
-      console.log(err)
     }
-  }
   const funcheck = async () => {
     try {
       const checkToken = await axios.get('http://localhost:3001/checktoken', {

@@ -218,16 +218,18 @@ const Update_Score = async (tid) => {
         else {
             await BorrowerMLSchema.create({
                 tid: tid,
-                loan_amt: tdet.loan_amount,
-                mortdue: 0,
-                cur_prop_value: Adtnl.curr_prop_value,
-                year_of_job: Adtnl.year_of_job,
-                num_derog_rep: 0,
-                num_delinq_cr_lines: 0,
-                age_oldest_cr_line: 0,
-                num_rec_cr_inq: 0,
-                num_cr_inq: 0,
-                debt_to_inc: 0
+                annual_inc: ,
+                dti: , 
+                inq_last_6mths: 0, 
+                open_acc: 0, 
+                total_acc: 0, 
+                revol_util: 0, 
+                total_pymnt: 0, 
+                grade_encoded: , 
+                loan_amnt: , 
+                term_months: ,
+                emp_length_years: ,
+                installment:   
             });
         }
         console.log("Created/Updated_Ml_Data");
@@ -250,16 +252,18 @@ const Create_Score = async (tid) => {
         const pythonProcess = spawn('python', [
             './gen_model/model.py',
             '--disable=warning',
-            ml_data.loan_amt,
-            ml_data.mortdue, 
-            ml_data.cur_prop_value, 
-            ml_data.year_of_job, 
-            ml_data.num_derog_rep, 
-            ml_data.num_delinq_cr_lines, 
-            ml_data.age_oldest_cr_line, 
-            ml_data.num_rec_cr_inq, 
-            ml_data.num_cr_inq, 
-            ml_data.debt_to_inc 
+            ml_data.annual_inc,
+            ml_data.dti, 
+            ml_data.inq_last_6mths, 
+            ml_data.open_acc, 
+            ml_data.total_acc, 
+            ml_data.revol_util, 
+            ml_data.total_pymnt, 
+            ml_data.grade_encoded, 
+            ml_data.loan_amnt, 
+            ml_data.term_months,
+            ml_data.emp_length_years,
+            ml_data.installment 
         ]);
 
         pythonProcess.stdout.on('data', async (data) => {
