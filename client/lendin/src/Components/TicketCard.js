@@ -1,6 +1,10 @@
 import React from 'react'
 import './css/TicketCard.css' // Import your CSS file
-
+const Pay = (e) => {
+  // console.log(e)
+  console.log('pay money to ticket id ' + e.target.value)
+  console.log()
+}
 const TicketCard = ({ ticket }) => {
   return (
     <div className="card">
@@ -38,6 +42,9 @@ const TicketCard = ({ ticket }) => {
         <p>
           <strong>Loan Type:</strong> {ticket.loan_type}
         </p>
+        <button className="Ticket-btn" onClick={Pay} value={ticket.Ticket_id}>
+          Pay Now
+        </button>
       </div>
     </div>
   )
