@@ -11,31 +11,37 @@ const Open_Ticket=()=>{
         }catch(err){
             console.log(err);
         }
+      )
+    } catch (err) {
+      console.log(err)
     }
-    const funcheck = async () => {
-        try {
-            const checkToken = await axios.get('http://localhost:3001/checktoken', {
-                headers: {
-                    Authorization: localStorage.getItem('token'),
-                },
-            });
-            
-            if (!checkToken.data.is_true) {
-                navigate('/Home');
-            } else {
-                console.log('Token is valid');
-            }
-        } catch (error) {
-            console.error('Error checking token:', error);
-            navigate('/Home');
-        }
-    };
-    funcheck();
-    Handle_Card();
-    return (
-        <div>
-            <h1>YO BRO</h1>
-        </div>
-    )
-};
-export default Open_Ticket;
+  }
+  const funcheck = async () => {
+    try {
+      const checkToken = await axios.get('http://localhost:3001/checktoken', {
+        headers: {
+          Authorization: localStorage.getItem('token'),
+        },
+      })
+
+      if (!checkToken.data.is_true) {
+        navigate('/Home')
+      } else {
+        console.log('Token is valid')
+      }
+    } catch (error) {
+      console.error('Error checking token:', error)
+      navigate('/Home')
+    }
+  }
+  funcheck()
+  Handle_Card()
+  return (
+    <div className="page">
+      <div className="section">
+        <h1 className="header">YO BRO</h1>
+      </div>
+    </div>
+  )
+}
+export default Open_Ticket
