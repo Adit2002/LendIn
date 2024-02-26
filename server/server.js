@@ -218,18 +218,18 @@ const Update_Score = async (tid) => {
         else {
             await BorrowerMLSchema.create({
                 tid: tid,
-                annual_inc: ,
-                dti: , 
+                annual_inc: Adtnl.annual_income,
+                dti: 0, 
                 inq_last_6mths: 0, 
                 open_acc: 0, 
                 total_acc: 0, 
                 revol_util: 0, 
                 total_pymnt: 0, 
-                grade_encoded: , 
-                loan_amnt: , 
-                term_months: ,
-                emp_length_years: ,
-                installment:   
+                grade_encoded: 2, 
+                loan_amnt: tdet.loan_amount, 
+                term_months: tdet.loan_duration,
+                emp_length_years: Adtnl.year_of_job,
+                installment: tdet.loan_installment   
             });
         }
         console.log("Created/Updated_Ml_Data");
