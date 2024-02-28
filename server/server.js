@@ -17,6 +17,7 @@ const TicketSchema = require("./Ticket.js");
 const Loan_typeSchema = require("./Loan_type.js");
 const AdtnlSchema = require("./borrower_addtnl.js");
 const BorrowerMLSchema = require("./Borrower_info_ML.js");
+const Trns_DetailSchema= require("./User_trns_details.js");
 mongoose
   .connect(process.env.MONGOOSE_API_KEY)
   .then((p) => {
@@ -163,6 +164,7 @@ app.post("/Login", async (req, res) => {
       return res.send({
         istrue: true,
         Jtoken: token,
+        Name: user_real.investor_name,
         message: "Login Success",
       });
     } else {
@@ -189,6 +191,7 @@ app.post("/Login", async (req, res) => {
       return res.send({
         istrue: true,
         Jtoken: token,
+        Name: user_real.borrower_name,
         message: "Successfull Login",
       });
     } else {
@@ -413,16 +416,30 @@ app.get("/SeeTicket", async (req, res) => {
     return res.send({ is_true: false, message: "Error" });
   }
 });
-app.get("/Open_Ticket", async (req, res) => {
+
+app.post("/Open_Ticket", async (req, res) => {
+  // console.log(req);
   try {
-    const ticketDetails = await TicketSchema.findOne({ id: req.body.tid });
+    const ticketDetails = await TicketSchema.findOne({ Ticket_id: req.body.tid });
+    // console.log(ticketDetails);
+    const TD=await TicketSchema.find({borrower_mail: ticketDetails.borrower_mail});
     const user_detail = await BorrowerSchema.findOne({
-      email: ticketDetails.borrower_mail,
+      borrower_email: ticketDetails.borrower_mail,
     });
+    const borrower_ml=await BorrowerMLSchema.findOne({
+       tid: req.body.tid
+    });
+    const Trns_Data=await Trns_DetailSchema.findOne({
+      email: ticketDetails.borrower_mail
+    });
+    // console.log("Suvvess");
     return res.send({
       is_true: true,
       JsonData_ticket: ticketDetails,
+      JsonData_ticketAll: TD,
       JsonData_user: user_detail,
+      JsonData_ML: borrower_ml,
+      JsonTrns_Data: Trns_Data
     });
   } catch (err) {
     console.log(err);
@@ -461,3 +478,4 @@ app.post("/brw_adtnl_info", async (req, res) => {
   }
   return res.send({ is_true: false });
 });
+

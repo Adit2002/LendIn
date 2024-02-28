@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import './css/general.css'
 const Dashboard_Investor = () => {
   const navigate = useNavigate()
   const funcheck = async () => {
@@ -22,12 +23,16 @@ const Dashboard_Investor = () => {
   funcheck()
   return (
     <div className="page">
+      <div className='image-postlogin'>
       <div className="section">
-        <h1>See Available Options</h1>
-        <a href={`/${localStorage.getItem('Email')}/See_Ticket`}>Go to</a>
+        <h1 className='metallic-heading'>Hello! {localStorage.getItem('Name')}, How can we assist.</h1><br/><br/>
+        <a className='box-link' href={`/${localStorage.getItem('Email')}/See_Ticket`}>Invest Here!</a>
+        <br/>
+        <br/>
         <button className="btn" onClick={HandleLogout}>
           LogOut
         </button>
+      </div>
       </div>
     </div>
   )

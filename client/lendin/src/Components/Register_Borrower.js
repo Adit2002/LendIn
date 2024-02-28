@@ -33,8 +33,10 @@ const Register_Borrower = () => {
   }
   return (
     <div className="page">
-      <div className="section">
-        <form className="info-form" onSubmit={HandleSubmit}>
+      <div className='image-prelogin'>
+        <div className="info-form">
+        <h1 className='name-card'>Register as Borrower</h1>
+        <form onSubmit={HandleSubmit}>
           <label for="borrower_name">Name:</label>
           <input type="text" id="borrower_name" name="borrower_name" />
 
@@ -71,7 +73,7 @@ const Register_Borrower = () => {
             <option value="other">Other</option>
           </select>
 
-          <label for="borrower_pan_image">PAN Image:</label>
+          {/* <label for="borrower_pan_image">PAN Image:</label>
           <input
             type="file"
             id="borrower_pan_image"
@@ -83,12 +85,13 @@ const Register_Borrower = () => {
             type="file"
             id="borrower_aadhar_image"
             name="borrower_aadhar_image"
-          />
+          /> */}
 
           <button type="submit">Submit</button>
         </form>
+        </div>
+        </div>
       </div>
-    </div>
   )
 }
 export default Register_Borrower

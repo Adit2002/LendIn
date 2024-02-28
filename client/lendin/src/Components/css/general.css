@@ -1,0 +1,40 @@
+.box-link {
+    display: inline-block;
+    align-items: center;
+    text-align: center;
+    padding: 10px 20px; 
+    border: 2px solid #0b0b0b; /* Border properties */
+    border-radius: 5px; /* Rounded corners */
+    background-color: #f7f1f1; /* Background color */
+    color: #0f1010; /* Text color */
+    font-size: large;
+    font-family: 'Copperplate Gothic', sans-serif; /* Professional font */
+    font-weight: bold;
+  }
+  
+  .box-link:hover {
+    background-color: #0e0e0e;
+    color: white; /* Change background color on hover */
+  }
+  
+  .metallic-heading {
+    position: center;
+    font-family: 'Copperplate Gothic', sans-serif; /* Professional font */
+    font-weight: bold; /* Bold text */
+    color: #000000; /* Text color */
+    /* text-shadow:10px 10px 0 0 #ccc; */
+  }
+  
+  .metallic-heading::before {
+    content: attr(data-text); /* Use content attribute for text */
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: transparent; /* Hide original text */
+    text-shadow: 1px 1px 1px #ccc, 2px 2px 2px #2da8bd; /* Metallic text shadow */
+  }
+  
+  .metallic-heading:hover {
+    color: #616165; 
+  }
+  

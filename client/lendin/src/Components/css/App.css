@@ -1,30 +1,58 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 body {
-  font-family: 'Kanit', sans-serif;
-  background: grey;
-  width: 100%;
-  height: 100%;
+  background-color: white;
+  margin: 0;
 }
 .page {
-  display: flex;
-  justify-content: center;
-  padding-top: 3rem;
-  height: 100%;
-  width: 100%;
-}
-.section {
-  margin: 1.5rem;
-  color: #000000;
-  padding: 2rem;
-  padding-top: 3rem;
-  width: 90vw;
+  background-size: 100% auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  min-height: calc(100vh - 6rem); /* Set minimum height to 100% of viewport height minus 6rem (height of the navbar) */
+  width: 100%;
+  padding: 0;
+  margin-top: 0;
+  z-index: 2;
+}
+
+.image-prelogin {
+  background-image: url('C:/Users/HP/Documents/GitHub/LendIn/client/lendin/src/images/LendIn.gif');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  min-height: 100vh; /* Set minimum height to 100% of viewport height */
+  width: 100%;
+  padding: 0;
+}
+.image-postlogin {
+  background-image: url('C:/Users/HP/Documents/GitHub/LendIn/client/lendin/src/images/after.gif');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  min-height: 100vh; /* Set minimum height to 100% of viewport height */
+  width: 100%;
+}
+
+.section {
+  /* margin-top: 7rem; */
+  color: #f7f9fa;
+  width: 50vw;
+  margin-left: 30%;
+  display: flex;
+  flex-direction: column;
+}
+
+.name-card{
+  margin-top: 0;
+  background-color: #1fa4cd;
+  color: #080808;
+  padding: 10px;
+  border-radius: 10px
+}
+.name-card:hover{
+  margin-top: 0;
+  background-color: #080808;
+  color: #1fa4cd;
+  padding: 10px;
+  border-radius: 10px
 }
 .header,
 .subheader {
@@ -68,14 +96,33 @@ a:hover {
     1px
   ); 
 }
-.info-form {
+.info-form-login {
   max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #f9f9f9;
+  margin-left: auto;
+  margin-right: 7rem;
+  margin-top: 5rem;
+  margin-bottom: auto; /* Move the element to the right */
+  padding: 10px;
+  background-color: #f8f5f5;
   border-radius: 10px;
+  font-weight: bold;
+  font-family: 'Copperplate Gothic', sans-serif;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
+.info-form {
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: 7rem;
+  margin-bottom: auto; /* Move the element to the right */
+  padding: 10px;
+  background-color: #f8f5f5;
+  border-radius: 10px;
+  font-weight: bold;
+  font-family: 'Copperplate Gothic', sans-serif;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
 
 .info-form label {
   display: block;
@@ -88,8 +135,9 @@ a:hover {
 .info-form input[type='password'],
 .info-form select {
   width: 100%;
-  padding: 10px;
+  padding: 5px;
   margin-bottom: 20px;
+  right: 0;
   border: 1px solid #ccc;
   border-radius: 5px;
   box-sizing: border-box;
@@ -100,8 +148,20 @@ a:hover {
 }
 
 .info-form button {
-  background-color: #4caf50;
-  color: white;
+  background-color: #0e0e0e;
+  color: rgb(244, 240, 240);
+  width: 100%;
+  margin: auto;
+  padding: 10px 20px;
+  right: 0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.info-form button:hover {
+  background-color: #fbf9f9;
+  color: rgb(18, 18, 18);
   width: 100%;
   margin: auto;
   padding: 10px 20px;
@@ -111,15 +171,12 @@ a:hover {
   font-size: 16px;
 }
 
-.info-form button:hover {
-  background-color: #45a049;
-}
 
 .info-form select {
   width: 100%;
   padding: 10px;
   margin-bottom: 20px;
-  border: 1px solid #ccc;
+  border: 1px solid #111111;
   border-radius: 5px;
   box-sizing: border-box;
 }
@@ -127,8 +184,8 @@ a:hover {
 .info-form select:focus,
 .info-form input:focus {
   outline: none;
-  border-color: #4caf50;
-  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+  border-color: #111111;
+  box-shadow: 0 0 5px rgba(248, 251, 248, 0.5);
 }
 .radio-form {
   display: flex;
@@ -139,3 +196,67 @@ a:hover {
   display: flex;
   justify-content: center;
 }
+.info-form label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.info-form-login input[type='text'],
+.info-form-login input[type='email'],
+.info-form-login input[type='password'],
+.info-form select {
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 20px;
+  right: 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.info-form-login input[type='file'] {
+  margin-bottom: 20px;
+}
+
+.info-form-login button {
+  background-color: #0e0e0e;
+  color: rgb(244, 240, 240);
+  width: 100%;
+  margin: auto;
+  padding: 10px 20px;
+  right: 0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.info-form-login button:hover {
+  background-color: #fbf9f9;
+  color: rgb(18, 18, 18);
+  width: 100%;
+  margin: auto;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+
+.info-form-login select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #111111;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.info-form-login select:focus,
+.info-form-login input:focus {
+  outline: none;
+  border-color: #111111;
+  box-shadow: 0 0 5px rgba(248, 251, 248, 0.5);
+}
+

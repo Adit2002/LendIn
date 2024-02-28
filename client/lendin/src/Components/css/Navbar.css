@@ -1,19 +1,25 @@
 .nav-bar {
-  position: fixed;
   z-index: 1;
-  background: linear-gradient(rgba(41, 49, 49, 0.977), rgba(0, 0, 0, 0.851));
+  background-image: linear-gradient(to right, rgb(39, 38, 38), rgba(0, 0, 0, 1));
+  border-bottom: 3px solid rgb(163, 144, 50);
   width: 100%;
   height: 6rem;
-  color: rgb(0, 0, 0);
+  color: #080808;
   font-family: 'Kanit', 'Work Sans', sans-serif;
   display: flex;
   align-items: center;
 }
+
+
 .nav-bar a {
   text-decoration: none;
+  /* background-color: aliceblue;
+  margin-bottom: 3rem;
+  padding-left:10px ;
+  padding-right:10px ; */
 }
 .Logo_header {
-  color: #fafafa;
+  color: #161515;
   text-decoration: none;
 }
 .nav-top {
@@ -43,7 +49,7 @@
 .bar {
   width: 25px;
   height: 3px;
-  background-color: #ffffff;
+  background-color: #151414;
   margin: 6px 0;
   transition: 0.4s;
 }
@@ -63,7 +69,7 @@
   align-items: center;
   padding: 1.5rem;
   height: 3rem;
-  color: white;
+  color: rgb(249, 246, 246);
 }
 .navbar-links li {
   display: flex;

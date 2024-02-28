@@ -53,12 +53,13 @@ const Create_Ticket = () => {
       )
       if (serverresponse.data.is_true === true) {
         console.log('Successfully Created')
-        Give_Score()
+        Give_Score();
+        navigate(`./${localStorage.getItem('Email')}/DsbBrw`)
       } else {
         console.log('Error')
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
 }
     const check_if_data_present=async()=>{
@@ -83,16 +84,17 @@ const Create_Ticket = () => {
   }
   return (
     <div className="page">
-      <div className="section">
-        <h1>Add Ticket Details</h1>
-        <form className="info-form" onSubmit={HandleSubmit}>
+      <div className='image-postlogin'>
+        <div className='info-form-login'>
+        <h1 className='name-card'>Add Ticket Details</h1>
+        <form onSubmit={HandleSubmit}>
           <label for="amount">Loan Amount</label>
           <input type="text" id="amount" name="amount" />
           <br />
           <label for="duration">Duration (In Months)</label>
           <input type="text" id="duration" name="duration" />
           <br />
-          <label for="type">Loan Type</label>
+          <label for="type">Loan Type : [Education, Personal, Car]</label>
           <input type="text" id="type" name="type" />
           <br />
           <label for="Description">Description:</label>
@@ -101,6 +103,7 @@ const Create_Ticket = () => {
           <button>Submit</button>
         </form>
       </div>
+    </div>
     </div>
   )
 }

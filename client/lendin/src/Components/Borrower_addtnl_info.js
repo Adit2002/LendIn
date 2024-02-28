@@ -44,8 +44,10 @@ const Borrower_addtnl_info = () => {
   funcheck()
   return (
     <div className="page">
-      <div className="section">
-        <form className="info-form" onSubmit={HandleSubmit}>
+      <div className='image-postlogin'>
+      <div className="info-form-login">
+        <h1 className='name-card'>Information</h1>
+        <form onSubmit={HandleSubmit}>
           <label for="annual_income">Enter your Annual_Income</label>
           <input type="text" id="annual_income" name="annual_income" />
           <br />
@@ -64,7 +66,8 @@ const Borrower_addtnl_info = () => {
           <button>Submit</button>
         </form>
       </div>
+      </div>
     </div>
   )
 }
-export default Borrower_addtnl_info
+export default Borrower_addtnl_info;

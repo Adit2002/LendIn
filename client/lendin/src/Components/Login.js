@@ -4,9 +4,7 @@ const Login = () => {
   const navigate = useNavigate()
   const Login_Submit = async (e) => {
     let val = -1
-    e.preventDefault()
-    // console.log(e);
-    // console.log(e.target.investor.checked)
+    e.preventDefault();
     if (e.target.investor.checked === true) val = 0
     else val = 1
     console.log(val)
@@ -15,11 +13,12 @@ const Login = () => {
         role: val,
         email: e.target.Email.value,
         password: e.target.Password.value,
-      })
+      });
       if (serverresponse.data.istrue === true) {
         localStorage.setItem('token', serverresponse.data.Jtoken)
         localStorage.setItem('Email', e.target.Email.value)
         localStorage.setItem('Role', val)
+        localStorage.setItem('Name', serverresponse.data.Name)
         if (val == 0) {
           navigate(`/${e.target.Email.value}/DsbInv`)
         } else {
@@ -36,8 +35,9 @@ const Login = () => {
   }
   return (
     <div className="page">
-      <div className="section">
-        <form className="info-form" onSubmit={Login_Submit}>
+      <div className='image-prelogin'>
+      <div className='info-form-login'>
+        <form  onSubmit={Login_Submit}>
           <div className="radio-form">
             <div className="radio-btn">
               <input type="radio" id="investor" name="role" value="investor" />
@@ -49,11 +49,13 @@ const Login = () => {
             </div>
           </div>
           <input type="text" id="Email" placeholder="Email" />
-          <input type="text" id="Password" placeholder="Password" />
+          <input type="password" id="Password" placeholder="Password" />
           <button>Submit</button>
         </form>
       </div>
-    </div>
+      </div>
+      </div>
   )
 }
 export default Login;
+

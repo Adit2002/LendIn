@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/HP/Desktop",
-      "program": "c:/Users/HP/Desktop/build/Debug/outDebug",
+      "cwd": "c:/Users/HP/Documents/GitHub/LendIn/client/lendin/src/Components/css",
+      "program": "c:/Users/HP/Documents/GitHub/LendIn/client/lendin/src/Components/css/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

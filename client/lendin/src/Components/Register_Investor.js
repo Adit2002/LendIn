@@ -37,9 +37,10 @@ const Register_Investor = () => {
 
   return (
     <div className="page">
-      <div className="section">
-        <h1>Investor Registration</h1>
-        <form className="info-form" onSubmit={HandleSubmit}>
+      <div className='image-prelogin'>
+      <div className="info-form">
+      <h1 className ="name-card">Investor Registration</h1>
+        <form  onSubmit={HandleSubmit}>
           <label for="investor_name">Name:</label>
           <input type="text" id="investor_name" name="investor_name" required />
 
@@ -93,7 +94,7 @@ const Register_Investor = () => {
             <option value="other">Other</option>
           </select>
 
-          <label for="investor_pan_image">Upload PAN Image:</label>
+          {/* <label for="investor_pan_image">Upload PAN Image:</label>
           <input
             type="file"
             id="investor_pan_image"
@@ -107,10 +108,11 @@ const Register_Investor = () => {
             id="investor_aadhar_image"
             name="investor_aadhar_image"
             accept="image/*"
-          />
+          /> */}
 
           <button type="submit">Register</button>
         </form>
+      </div>
       </div>
     </div>
   )

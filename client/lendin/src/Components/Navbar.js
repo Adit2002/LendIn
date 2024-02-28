@@ -1,33 +1,30 @@
-import React, { useState } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
-import navLogo from '../images/navbar_logo.jpg'
-import './css/Navbar.css'
+import React, { useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import './css/Navbar.css';
 
 const Navbar = () => {
-  const [menuOpen, setMenuOpen] = useState(false)
-  const navigate = useNavigate()
-  const isLoggedIn = localStorage.getItem('token')
-  const role = localStorage.getItem('Role')
-  // const isLoggedIn = false
+  const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const isLoggedIn = localStorage.getItem('token');
+  const role = localStorage.getItem('Role');
+
   const toggleMenu = () => {
-    setMenuOpen(!menuOpen)
-  }
+    setMenuOpen(!menuOpen);
+  };
+
   const handleLogout = () => {
-    localStorage.clear()
-    navigate('/login')
-  }
+    localStorage.clear();
+    navigate('/login');
+  };
+
   return (
     <div className="nav-bar">
       <div className="nav-top">
-        <NavLink to="/" className="logo">
-          <img src={navLogo} alt="Logo" />
-          <h1 className="Logo_header">LendIn</h1>
-        </NavLink>
-        <div className="toggle">
-          <div className="menu-icon" onClick={toggleMenu}>
-            <div className={`bar ${menuOpen ? 'open' : ''}`}></div>
-            <div className={`bar ${menuOpen ? 'open' : ''}`}></div>
-            <div className={`bar ${menuOpen ? 'open' : ''}`}></div>
+        <div className="toggle" onClick={toggleMenu}>
+          <div className={`menu-icon ${menuOpen ? 'open' : ''}`}>
+            <div className="bar"></div>
+            <div className="bar"></div>
+            <div className="bar"></div>
           </div>
         </div>
       </div>
@@ -39,16 +36,11 @@ const Navbar = () => {
         <li>
           <NavLink to="/about">About</NavLink>
         </li>
-        <li>
-          <NavLink to="/contact">Contact</NavLink>
-        </li>
         {isLoggedIn ? (
           <>
             <li>
               <NavLink
-                to={`/${localStorage.getItem('Email')}/${
-                  role == 1 ? 'DsbBrw' : 'DsbInv'
-                }`}
+                to={`/${localStorage.getItem('Email')}/${role == 1 ? 'DsbBrw' : 'DsbInv'}`}
               >
                 Dashboard
               </NavLink>
@@ -66,7 +58,7 @@ const Navbar = () => {
         )}
       </ul>
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import './css/general.css'
 const Dashboard_Borrower = () => {
   const navigate = useNavigate()
   // const token = localStorage.getItem('token');
@@ -23,20 +24,23 @@ const Dashboard_Borrower = () => {
   funcheck()
   return (
     <div className="page">
+      <div className='image-postlogin'>
       <div className="section">
-        <h1> Borrower dashboard </h1>
-        <a href={`/${localStorage.Email}/CreateTicket`}>
+        <h1 className='metallic-heading'> Hello! {localStorage.getItem('Name')} How can we help -  </h1><br/>
+        <a className='box-link' href={`/${localStorage.Email}/CreateTicket`}>
           {' '}
           Link to Create Ticket
         </a>
         <br />
-        <a href={`/${localStorage.Email}/Brw_addtnl_info`}>
+        <a className='box-link' href={`/${localStorage.Email}/Brw_addtnl_info`}>
           Add Additional Info
         </a>
+        <br/><br/>
         <button className="btn" onClick={HandleLogout}>
           LogOut
         </button>
       </div>
+    </div>
     </div>
   )
 }

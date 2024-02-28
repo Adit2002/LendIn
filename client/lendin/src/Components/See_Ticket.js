@@ -35,30 +35,27 @@ const See_Ticket = () => {
     try {
       const serverResponse = await axios.get('http://localhost:3001/SeeTicket')
       if (serverResponse.data.is_true === true) {
-        console.log('Data fetched')
+        // console.log('Data fetched')
         setTicketDataArray(serverResponse.data.JsonData)
       } else {
-        console.log('Data UnFetched')
+        // console.log('Data UnFetched')
       }
     } catch (err) {
-      console.log(err)
+      // console.log(err)
     }
   }
-  const HandleClick = (ticket_details) => {
-    localStorage.setItem("TID", ticket_details.Ticket_id);
-    navigate(`/${localStorage.getItem('Email')}/Open_Ticket`);
-  };
   
   return (
     <div className="page">
+      <div className='image-postlogin'>
       <div className="section">
         {ticketDataArray.length > 0 &&
           ticketDataArray.map((ticket, index) => (
             <div key={index}>
               <TicketCard ticket={ticket} />
-              <button onClick={() => HandleClick(ticket)}>Open</button>
             </div>
           ))}
+      </div>
       </div>
     </div>
   );  
