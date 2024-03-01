@@ -54,7 +54,7 @@ const Create_Ticket = () => {
       if (serverresponse.data.is_true === true) {
         console.log('Successfully Created')
         Give_Score();
-        navigate(`./${localStorage.getItem('Email')}/DsbBrw`)
+        navigate(`/${localStorage.getItem('Email')}/DsbBrw`)
       } else {
         console.log('Error')
       }

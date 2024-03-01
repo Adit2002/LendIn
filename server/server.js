@@ -70,6 +70,7 @@ app.post("/Register_Inv", async (req, res) => {
       message: "Email already in Use, Login for more details",
     });
   }
+  
   console.log(reg_det);
   const password_hash = await bcrypt.hash(reg_det.password, 10);
   try {
