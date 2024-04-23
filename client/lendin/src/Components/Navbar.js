@@ -6,7 +6,7 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   const isLoggedIn = localStorage.getItem('token');
-  const role = localStorage.getItem('Role');
+  const role = localStorage.getItem('role');
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -30,9 +30,11 @@ const Navbar = () => {
       </div>
 
       <ul className={`navbar-links ${menuOpen ? 'open' : ''}`}>
-        <li>
-          <NavLink to="/">Home</NavLink>
-        </li>
+        {!isLoggedIn && (
+          <li>
+            <NavLink to="/">Home</NavLink>
+          </li>
+        )}
         <li>
           <NavLink to="/about">About</NavLink>
         </li>
@@ -40,7 +42,7 @@ const Navbar = () => {
           <>
             <li>
               <NavLink
-                to={`/${localStorage.getItem('Email')}/${role == 1 ? 'DsbBrw' : 'DsbInv'}`}
+                to={`/${localStorage.getItem('email')}/${role === '1' ? 'DsbBrw' : 'DsbInv'}`}
               >
                 Dashboard
               </NavLink>

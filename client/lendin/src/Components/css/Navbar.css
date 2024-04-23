@@ -1,6 +1,6 @@
 .nav-bar {
   z-index: 1;
-  background-image: linear-gradient(to right, rgb(39, 38, 38), rgba(0, 0, 0, 1));
+  background-image: linear-gradient(to right, rgb(84, 82, 82), rgba(0, 0, 0, 1));
   border-bottom: 3px solid rgb(163, 144, 50);
   width: 100%;
   height: 6rem;
@@ -13,10 +13,6 @@
 
 .nav-bar a {
   text-decoration: none;
-  /* background-color: aliceblue;
-  margin-bottom: 3rem;
-  padding-left:10px ;
-  padding-right:10px ; */
 }
 .Logo_header {
   color: #161515;

@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom'
 
 const Register_Investor = () => {
   const navigate = useNavigate()
-
+  const name=localStorage.getItem('name');
+  const email=localStorage.getItem('email');
   const HandleSubmit = async (e) => {
     e.preventDefault()
 
@@ -11,22 +12,18 @@ const Register_Investor = () => {
       const serverResponse = await axios.post(
         'http://localhost:3001/Register_Inv',
         {
-          name: e.target.investor_name.value,
+          name: name,
           contact_number: e.target.investor_contact_number.value,
-          email: e.target.investor_email.value,
-          password: e.target.investor_password.value,
+          email: email,
           address: e.target.investor_address.value,
           aadhar: e.target.investor_aadhar.value,
           pan: e.target.investor_pan.value,
           sex: e.target.investor_sex.value,
-          // pan_image: e.target.investor_pan_image.files[0],
-          // aadhar_image: e.target.investor_aadhar_image.files[0]
         }
       )
-
       if (serverResponse.data.is_true === true) {
         console.log('Success')
-        navigate('/Login')
+        navigate(`/${email}/DsbInv`)
       } else {
         console.log('Try Again, Error')
       }
@@ -40,6 +37,7 @@ const Register_Investor = () => {
       <div className='image-prelogin'>
       <div className="info-form">
       <h1 className ="name-card">Investor Registration</h1>
+      <h2 className='name-card'>Email: {email} </h2>
         <form  onSubmit={HandleSubmit}>
           <label for="investor_name">Name:</label>
           <input type="text" id="investor_name" name="investor_name" required />
@@ -49,22 +47,6 @@ const Register_Investor = () => {
             type="text"
             id="investor_contact_number"
             name="investor_contact_number"
-            required
-          />
-
-          <label for="investor_email">Email:</label>
-          <input
-            type="email"
-            id="investor_email"
-            name="investor_email"
-            required
-          />
-
-          <label for="investor_password">Password:</label>
-          <input
-            type="password"
-            id="investor_password"
-            name="investor_password"
             required
           />
 
@@ -93,23 +75,6 @@ const Register_Investor = () => {
             <option value="female">Female</option>
             <option value="other">Other</option>
           </select>
-
-          {/* <label for="investor_pan_image">Upload PAN Image:</label>
-          <input
-            type="file"
-            id="investor_pan_image"
-            name="investor_pan_image"
-            accept="image/*"
-          />
-
-          <label for="investor_aadhar_image">Upload Aadhar Image:</label>
-          <input
-            type="file"
-            id="investor_aadhar_image"
-            name="investor_aadhar_image"
-            accept="image/*"
-          /> */}
-
           <button type="submit">Register</button>
         </form>
       </div>

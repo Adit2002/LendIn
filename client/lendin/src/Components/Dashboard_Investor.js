@@ -26,7 +26,9 @@ const Dashboard_Investor = () => {
       <div className='image-postlogin'>
       <div className="section">
         <h1 className='metallic-heading'>Hello! {localStorage.getItem('Name')}, How can we assist.</h1><br/><br/>
-        <a className='box-link' href={`/${localStorage.getItem('Email')}/See_Ticket`}>Invest Here!</a>
+        <a className='box-link' href={`/${localStorage.getItem('email')}/See_Ticket`}>Invest Here!</a>
+        <br/>
+        <a className='box-link' href={`/metamask`}>Connect MetaMask!</a>
         <br/>
         <br/>
         <button className="btn" onClick={HandleLogout}>

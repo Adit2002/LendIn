@@ -22,6 +22,7 @@ const Open_Ticket = () => {
     "late_30_plus": 0,
     "non_repayment": 0
   });
+  const email=localStorage.getItem('email');
   const Handle_Card = async () => {
     try {
       const serverresponse = await axios.post(
@@ -75,7 +76,9 @@ const Open_Ticket = () => {
       navigate("/Home");
     }
   };
-
+  const BTC=()=>{
+    navigate(`/${email}/Transaction_init`);
+  }
   useEffect(() => {
     funcheck();
   }, []); 
@@ -114,7 +117,7 @@ const Open_Ticket = () => {
               <h3 className="h3"> Loan Duration : {Ticket_Data.loan_duration} </h3>
               <h3 className="h3"> Ticket Score : {Ticket_Data.ticketScore} </h3>
               </div>
-              <button className="btn1">Go To Pay</button>
+              <button onClick={BTC} className="btn1">Go To Pay</button>
           </div>
     );
 };

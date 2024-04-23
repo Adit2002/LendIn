@@ -7,17 +7,19 @@ const app = express();
 const http = require("http");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+const { jwtDecode } = require("jwt-decode");
 const Investor = require("./Investor");
-const bcrypt = require("bcrypt");
+const RazorPay = require("razorpay");
 const server = http.createServer(app);
 const BorrowerSchema = require("./borrower.js");
 const InvestorSchema = require("./Investor.js");
+const MetaMask= require('./MetaMask.js');
 const { spawn } = require("child_process");
 const TicketSchema = require("./Ticket.js");
 const Loan_typeSchema = require("./Loan_type.js");
 const AdtnlSchema = require("./borrower_addtnl.js");
 const BorrowerMLSchema = require("./Borrower_info_ML.js");
-const Trns_DetailSchema= require("./User_trns_details.js");
+const Trns_DetailSchema = require("./User_trns_details.js");
 mongoose
   .connect(process.env.MONGOOSE_API_KEY)
   .then((p) => {
@@ -60,149 +62,182 @@ const verifyToken = (req, res, next) => {
 app.post("/Register_Inv", async (req, res) => {
   console.log("Register as Investor");
   const reg_det = req.body;
-  const is_Present = await InvestorSchema.findOne({
-    investor_email: reg_det.email,
-  });
-  if (is_Present) {
-    console.log("Email already in use");
-    return res.send({
-      is_true: false,
-      message: "Email already in Use, Login for more details",
-    });
-  }
-  
-  console.log(reg_det);
-  const password_hash = await bcrypt.hash(reg_det.password, 10);
   try {
     InvestorSchema.create({
       investor_name: reg_det.name,
       investor_contact_number: reg_det.contact_number,
       investor_email: reg_det.email,
-      investor_password: password_hash,
       investor_pan: reg_det.pan,
       investor_aadhar: reg_det.aadhar,
       investor_address: reg_det.address,
       investor_sex: reg_det.sex,
-      investor_pan_image: reg_det.pan_image,
-      investor_aadhar_image: reg_det.aadhar_image,
     });
     console.log("Successfull");
+    return res.send({ is_true: true, message: "Successfully registered" });
   } catch (err) {
     console.log(err);
-    console.log("Error Occured while registration");
-    return res.send({ is_true: false, message: "Error occured" });
   }
-  return res.send({ is_true: true, message: "Successfully registered" });
+  return res.send({ is_true: false, message: "Error occured" });
 });
 
 app.post("/Register_Borrower", async (req, res) => {
   console.log("Register as Borrower");
   const reg_det = req.body;
-  // console.log(req.body);
   try {
-    // Check if the email is already in use
-    const isPresent = await BorrowerSchema.findOne({
-      borrower_email: reg_det.email,
-    });
-    if (isPresent) {
-      console.log("Email already in use");
-      return res.send({
-        is_true: false,
-        message: "Email already in Use, Login for more details",
-      });
-    }
-
-    // Hash the password
-    const password_hash = await bcrypt.hash(reg_det.password, 10);
-
-    // Create a new borrower document
     await BorrowerSchema.create({
       borrower_name: reg_det.name,
       borrower_contact_number: reg_det.contact_number,
       borrower_email: reg_det.email,
-      borrower_password: password_hash,
       borrower_address: reg_det.address,
       borrower_aadhar: reg_det.aadhar,
       borrower_pan: reg_det.pan,
       borrower_sex: reg_det.sex,
-      // borrower_pan_image: reg_det.pan_image,
-      // borrower_aadhar_image: reg_det.aadhar_image
     });
-
-    // Send success response
     console.log("Success");
     return res.send({ is_true: true, message: "Successfully registered" });
   } catch (err) {
     console.log("Error occurred while registration:", err);
-    return res.status(500).send({ is_true: false, message: "Error occurred" });
+  }
+  return res.status(500).send({ is_true: false, message: "Error occurred" });
+});
+
+app.post("/Reg", async (req, res) => {
+  const role = req.body.role;
+  const gt = req.body.token.credential;
+  const googletoken = jwtDecode(gt);
+  try {
+    const tokenPayload = {
+      email: googletoken.email,
+      role: role,
+    };
+
+    const token = jwt.sign(tokenPayload, process.env.JWT_ACCESS_KEY, {
+      expiresIn: "2h",
+    });
+
+    let isPresent = null;
+    let is_Present1 = null;
+
+    if (role === 1) {
+      isPresent = await BorrowerSchema.findOne({
+        borrower_email: googletoken.email,
+      }).catch((err) => {
+        throw err;
+      });
+    } else {
+      is_Present1 = await InvestorSchema.findOne({
+        investor_email: googletoken.email,
+      }).catch((err) => {
+        throw err;
+      });
+    }
+
+    if (isPresent !== null || is_Present1 !== null) {
+      return res.send({
+        istrue: true,
+        isPresent: true,
+        Jtoken: token,
+        Name: googletoken.name,
+        email: googletoken.email,
+        message: "Login successful.",
+      });
+    }
+
+    return res.send({
+      istrue: true,
+      isPresent: false,
+      Jtoken: token,
+      Name: googletoken.name,
+      email: googletoken.email,
+      message: "Registration successful.",
+    });
+  } catch (err) {
+    console.error("Error occurred during registration:", err);
+    return res.status(500).send({
+      istrue: false,
+      message: "An error occurred during registration.",
+    });
   }
 });
 
+
 app.post("/Login", async (req, res) => {
-//   console.log("Login Page Entered");
-  const user = req.body;
-  const email = req.body.email;
-//   console.log(email);
-  if (user.role === 0) {
-    // console.log("idhar");
-    const user_real = await InvestorSchema.findOne({ investor_email: email });
-    if (!user_real) {
-      return res.send({
-        istrue: false,
-        message: "Email is not registered, Register!",
+  const gt = req.body.token.credential;
+  const googletoken = jwtDecode(gt);
+  const role = req.body.role;
+
+  try {
+    let user_real;
+    let userType;
+
+    if (role === 0) {
+      user_real = await InvestorSchema.findOne({
+        investor_email: googletoken.email,
       });
-    }
-    const pass_value = await bcrypt.compare(
-      user.password,
-      user_real.investor_password
-    );
-    if (pass_value) {
-      // console.log(process.env.JWT_ACCESS_KEY);
-      const token = jwt.sign(user, process.env.JWT_ACCESS_KEY, {
-        expiresIn: "2h",
+      userType = "Investor";
+    } else if (role === 1) {
+      user_real = await BorrowerSchema.findOne({
+        borrower_email: googletoken.email,
       });
-    //   console.log("Successful Login");
-      return res.send({
-        istrue: true,
-        Jtoken: token,
-        Name: user_real.investor_name,
-        message: "Login Success",
-      });
+      userType = "Borrower";
     } else {
-      return res.send({ istrue: false, messae: "Login Credentials incorrect" });
+      return res.status(400).send({ message: "Invalid role specified." });
     }
-  }
-  if (user.role == 1) {
-    const user_real = await BorrowerSchema.findOne({ borrower_email: email });
-    if (!user_real) {
-      return res.send({
-        istrue: false,
-        message: "Email is not registered, Register!",
-      });
-    }
-    const pass_value = await bcrypt.compare(
-      user.password,
-      user_real.borrower_password
-    );
-    if (pass_value) {
-      const token = jwt.sign(user, process.env.JWT_ACCESS_KEY, {
-        expiresIn: "2h",
-      });
-      console.log("Successful Login");
-      return res.send({
-        istrue: true,
-        Jtoken: token,
-        Name: user_real.borrower_name,
-        message: "Successfull Login",
-      });
-    } else {
-      return res.send({
-        istrue: false,
-        message: "Login Credentials incorrect",
-      });
-    }
+
+    const tokenPayload = {
+      email: googletoken.email,
+      role: userType,
+    };
+    const token = jwt.sign(tokenPayload, process.env.JWT_ACCESS_KEY, {
+      expiresIn: "2h",
+    });
+    let isp = true;
+    if (!user_real) isp = false;
+    return res.send({
+      istrue: true,
+      Jtoken: token,
+      Name: googletoken.name,
+      email: googletoken.email,
+      ispresent: isp,
+      message: "Login successful.",
+    });
+  } catch (error) {
+    console.error("Error occurred during login:", error);
+    return res.status(500).send({ message: "An error occurred during login." });
   }
 });
+app.post('/maskconnect',async(req,res)=>{
+  const user = req.body;
+  const role = user.role;
+  const email = user.email;
+  const id=user.accid;
+  try {
+    await MetaMask.create({
+      email: email,
+      role: role,
+      acid:id
+    });
+    console.log("Success")
+    return res.send({ istrue: true, message: "Successfully registered" });
+  } catch (err) {
+    console.log("Error occurred while registration:", err);
+  }
+  console.log("NoSuccess")
+  return res.send({istrue: false, message: "Error, Try Again"});
+});
+app.post('/getmmid',async(req,res)=>{
+  const emails=req.body.emails;
+  const tid=req.body.tid;
+  try{
+    const sender=await MetaMask.findOne({email: emails});
+    const ticket=await TicketSchema.findOne({Ticket_id: tid});
+    const rec=await MetaMask.findOne({email: ticket.borrower_mail});
+    return res.send({istrue: true, sender: sender, ticket: ticket, reciver: rec});
+  }catch(err){
+    console.log(err);
+    return res.send({istrue: false,message: "Error, try Again"});
+  }
+})
 app.get("/checktoken", verifyToken, async (req, res) => {
   return res.send({ is_true: true });
 });
@@ -279,7 +314,7 @@ const Create_Score = async (tid) => {
     const ml_data = await BorrowerMLSchema.findOne({ tid: tid });
 
     if (!ml_data) {
-    //   console.log("No ML data found for tid:", tid);
+      //   console.log("No ML data found for tid:", tid);
       return;
     }
 
@@ -302,51 +337,50 @@ const Create_Score = async (tid) => {
     ]);
 
     pythonProcess.stdout.on("data", async (data) => {
-        const score = data.toString().trim(); // Convert buffer to string and remove leading/trailing whitespaces
-    
-        let scoreText = "";
-        switch (score) {
-            case "0":
-            case "3":
-                scoreText = "0-10%";
-                break;
-            case "1":
-                scoreText = "80-100%";
-                break;
-            case "2":
-                scoreText = "0-5%";
-                break;
-            case "4":
-                scoreText = "70-90%";
-                break;
-            case "5":
-                scoreText = "90-100%";
-                break;
-            case "6":
-                scoreText = "60-80%";
-                break;
-            case "7":
-                scoreText = "70-90%";
-                break;
-            case "8":
-                scoreText = "50-75%";
-                break;
-            case "9":
-                scoreText = "40-70%";
-                break;
-            default:
-                console.log("Invalid score:", score);
-        }
-    
-        await TicketSchema.updateOne(
-            { Ticket_id: tid },
-            { $set: { TicketScore: scoreText } }
-        );
+      const score = data.toString().trim(); // Convert buffer to string and remove leading/trailing whitespaces
+
+      let scoreText = "";
+      switch (score) {
+        case "0":
+        case "3":
+          scoreText = "0-10%";
+          break;
+        case "1":
+          scoreText = "80-100%";
+          break;
+        case "2":
+          scoreText = "0-5%";
+          break;
+        case "4":
+          scoreText = "70-90%";
+          break;
+        case "5":
+          scoreText = "90-100%";
+          break;
+        case "6":
+          scoreText = "60-80%";
+          break;
+        case "7":
+          scoreText = "70-90%";
+          break;
+        case "8":
+          scoreText = "50-75%";
+          break;
+        case "9":
+          scoreText = "40-70%";
+          break;
+        default:
+          console.log("Invalid score:", score);
+      }
+
+      await TicketSchema.updateOne(
+        { Ticket_id: tid },
+        { $set: { TicketScore: scoreText } }
+      );
     });
-    
 
     pythonProcess.stderr.on("data", (data) => {
-    //   console.log(`${data}`);
+      //   console.log(`${data}`);
       // Handle stderr data if needed
     });
 
@@ -421,17 +455,21 @@ app.get("/SeeTicket", async (req, res) => {
 app.post("/Open_Ticket", async (req, res) => {
   // console.log(req);
   try {
-    const ticketDetails = await TicketSchema.findOne({ Ticket_id: req.body.tid });
+    const ticketDetails = await TicketSchema.findOne({
+      Ticket_id: req.body.tid,
+    });
     // console.log(ticketDetails);
-    const TD=await TicketSchema.find({borrower_mail: ticketDetails.borrower_mail});
+    const TD = await TicketSchema.find({
+      borrower_mail: ticketDetails.borrower_mail,
+    });
     const user_detail = await BorrowerSchema.findOne({
       borrower_email: ticketDetails.borrower_mail,
     });
-    const borrower_ml=await BorrowerMLSchema.findOne({
-       tid: req.body.tid
+    const borrower_ml = await BorrowerMLSchema.findOne({
+      tid: req.body.tid,
     });
-    const Trns_Data=await Trns_DetailSchema.findOne({
-      email: ticketDetails.borrower_mail
+    const Trns_Data = await Trns_DetailSchema.findOne({
+      email: ticketDetails.borrower_mail,
     });
     // console.log("Suvvess");
     return res.send({
@@ -440,7 +478,7 @@ app.post("/Open_Ticket", async (req, res) => {
       JsonData_ticketAll: TD,
       JsonData_user: user_detail,
       JsonData_ML: borrower_ml,
-      JsonTrns_Data: Trns_Data
+      JsonTrns_Data: Trns_Data,
     });
   } catch (err) {
     console.log(err);
@@ -449,7 +487,7 @@ app.post("/Open_Ticket", async (req, res) => {
 });
 app.post("/brw_adtnl_info", async (req, res) => {
   const detail = req.body;
-//   console.log(detail);
+  //   console.log(detail);
   try {
     const already = await AdtnlSchema.findOne({ email: detail.email });
     if (already) {
@@ -479,4 +517,3 @@ app.post("/brw_adtnl_info", async (req, res) => {
   }
   return res.send({ is_true: false });
 });
-

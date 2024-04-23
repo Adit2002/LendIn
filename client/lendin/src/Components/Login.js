@@ -1,61 +1,85 @@
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import axios from 'axios';
+import { useState } from 'react'; // Import useState hook
+import { useNavigate } from 'react-router-dom';
+import { GoogleLogin } from "@react-oauth/google";
+
 const Login = () => {
-  const navigate = useNavigate()
-  const Login_Submit = async (e) => {
-    let val = -1
-    e.preventDefault();
-    if (e.target.investor.checked === true) val = 0
-    else val = 1
-    console.log(val)
+  const navigate = useNavigate();
+  const [val, setVal] = useState(-1); 
+  const [message,setMessage]=useState();
+
+  const Login_Submit = async (role, credentialResponse) => { 
     try {
-      const serverresponse = await axios.post('http://localhost:3001/Login', {
-        role: val,
-        email: e.target.Email.value,
-        password: e.target.Password.value,
+      const serverResponse = await axios.post('http://localhost:3001/Login', {
+        role: role,
+        token: credentialResponse, 
       });
-      if (serverresponse.data.istrue === true) {
-        localStorage.setItem('token', serverresponse.data.Jtoken)
-        localStorage.setItem('Email', e.target.Email.value)
-        localStorage.setItem('Role', val)
-        localStorage.setItem('Name', serverresponse.data.Name)
-        if (val == 0) {
-          navigate(`/${e.target.Email.value}/DsbInv`)
-        } else {
-          navigate(`/${e.target.Email.value}/DsbBrw`)
+      localStorage.setItem('token',serverResponse.data.Jtoken);
+      localStorage.setItem('role',role);
+      localStorage.setItem('name',serverResponse.data.Name);
+      localStorage.setItem('email',serverResponse.data.email);
+      if(serverResponse.data.ispresent===false){
+        if(val==0){
+          navigate('/register_inv');
+          return;
+        }
+        else{
+          navigate('/register_brw');
+          return;
         }
       }
-      else {
-        console.log('Invalid Credentials')
+      if(val==0){
+        navigate(`/${serverResponse.data.email}/DsbInv`);
       }
+      else{
+        navigate(`/${serverResponse.data.email}/DsbBrw`);
+      }
+    }catch(err){
+      console.log(err);
     }
-    catch(err){
-        console.log(err);
+  };
+  const Change = (e) => {
+    if (e.target.id === 'investor') {
+      setVal(0);
+    } else if (e.target.id === 'borrower') {
+      setVal(1);
     }
-  }
+  };
+
   return (
     <div className="page">
       <div className='image-prelogin'>
-      <div className='info-form-login'>
-        <form  onSubmit={Login_Submit}>
-          <div className="radio-form">
-            <div className="radio-btn">
-              <input type="radio" id="investor" name="role" value="investor" />
-              <label for="investor">Investor</label>
+        <div className='info-form-login'>
+          <form onChange={Change}>
+            <div className="radio-form">
+              <div className="radio-btn">
+                <input type="radio" id="investor" name="role" value="investor" />
+                <label htmlFor="investor">Investor</label>
+              </div>
+              <div className="radio-btn">
+                <input type="radio" id="borrower" name="role" value="borrower" />
+                <label htmlFor="borrower">Borrower</label>
+              </div>
             </div>
-            <div className="radio-btn">
-              <input type="radio" id="borrower" name="role" value="borrower" />
-              <label for="borrower">Borrower</label>
-            </div>
+          </form>
+          <div className='google-login'>
+            <GoogleLogin theme='filled_black'
+              onSuccess={(credentialResponse) => {
+                localStorage.setItem('Gtoken', credentialResponse.credential);
+                if (val !== -1) {
+                  Login_Submit(val, credentialResponse); 
+                }
+              }}
+              onError={() => {
+                console.log("Login Failed");
+              }}
+              useOneTap
+            />
           </div>
-          <input type="text" id="Email" placeholder="Email" />
-          <input type="password" id="Password" placeholder="Password" />
-          <button>Submit</button>
-        </form>
+        </div>
       </div>
-      </div>
-      </div>
-  )
-}
-export default Login;
+    </div>
+  );
+};
 
+export default Login;
