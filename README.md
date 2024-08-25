@@ -1,6 +1,6 @@
 # LendIn
 
-A P2P Lending WebApp built as a part of a college project. This application is a RESTful API that implements all CRUD operations
+A P2P Lending WebApp built as a part of a college project. Uses a RESTful API to handle communication between the client dnd the server.
 # Frontend :
 Frontend for the webapp is built using React.js.  
 **1.** 
