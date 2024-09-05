@@ -33,7 +33,8 @@ body {
   font-family: 'Copperplate Gothic', sans-serif;
 }
 .image-prelogin {
-  background-image: url('/src/images/Lend-In.png');
+  /* background-image: url('/client/lendin/src/images/Lend-In.png'); */
+  background-color: #394756;
   background-size: cover;
   background-position: center;
   display: flex;
@@ -42,7 +43,8 @@ body {
   padding: 0;
 }
 .image-postlogin {
-  background-image: url('/src/images/after.png');
+  /* background-image: url(''); */
+  background-color: #394756;
   background-size: cover;
   background-position: center;
   text-align: center;
@@ -323,6 +325,6 @@ a:hover {
   width: 30px;
   height: 30px;
   cursor: pointer;
-  background-image: url('/src/images/x.jpg');
+  /* background-image: url('/client/lendin/src/images/'); */
   background-size: cover;
 }
