@@ -8,7 +8,7 @@ const Register_Borrower = () => {
     e.preventDefault()
     try {
       const serverResponse = await axios.post(
-        'http://localhost:3001/Register_Borrower',
+        'https://lend-8g9ih55s7-adit2002s-projects.vercel.app/Register_Borrower',
         {
           name: name,
           contact_number: e.target.borrower_contact_number.value,

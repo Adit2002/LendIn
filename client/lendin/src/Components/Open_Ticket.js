@@ -26,7 +26,7 @@ const Open_Ticket = () => {
   const Handle_Card = async () => {
     try {
       const serverresponse = await axios.post(
-        "http://localhost:3001/Open_Ticket",
+        "https://lend-8g9ih55s7-adit2002s-projects.vercel.app/Open_Ticket",
         {
           tid: localStorage.getItem("tid"),
           email: localStorage.getItem("Email"),
@@ -60,7 +60,7 @@ const Open_Ticket = () => {
   };
   const funcheck = async () => {
     try {
-      const checkToken = await axios.get("http://localhost:3001/checktoken", {
+      const checkToken = await axios.get("https://lend-8g9ih55s7-adit2002s-projects.vercel.app/checktoken", {
         headers: {
           Authorization: localStorage.getItem("token"),
         },

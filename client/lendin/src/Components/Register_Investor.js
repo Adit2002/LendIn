@@ -10,7 +10,7 @@ const Register_Investor = () => {
 
     try {
       const serverResponse = await axios.post(
-        'http://localhost:3001/Register_Inv',
+        'https://lend-8g9ih55s7-adit2002s-projects.vercel.app/Register_Inv',
         {
           name: name,
           contact_number: e.target.investor_contact_number.value,

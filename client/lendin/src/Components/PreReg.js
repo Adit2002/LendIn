@@ -7,7 +7,7 @@ const PreReg = () => {
   const role = localStorage.getItem("R");
   const handleHere = async (credential) => {
     try {
-      const serverResponse = await axios.post("http://localhost:3001/Reg", {
+      const serverResponse = await axios.post("https://lend-8g9ih55s7-adit2002s-projects.vercel.app/Reg", {
         role: role,
         token: credential,
       });

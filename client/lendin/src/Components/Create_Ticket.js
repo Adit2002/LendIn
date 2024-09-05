@@ -15,7 +15,7 @@ const Create_Ticket = () => {
   const email = localStorage.getItem('Email')
   const funcheck = async () => {
     try {
-      const checkToken = await axios.get('http://localhost:3001/checktoken', {
+      const checkToken = await axios.get('https://lendin-1.onrender.com/checktoken', {
         headers: {
           Authorization: localStorage.getItem('token'),
         },
@@ -40,7 +40,7 @@ const Create_Ticket = () => {
       const currentDateTimeString = currentDate.toISOString()
       const tid = generateRandomString(10)
       const serverresponse = await axios.post(
-        'http://localhost:3001/CreateTicket',
+        'https://lendin-1.onrender.com/CreateTicket',
         {
           id: tid,
           mail: email,
@@ -63,7 +63,7 @@ const Create_Ticket = () => {
     }
 }
     const check_if_data_present=async()=>{
-        const serverres=await axios.post('http://localhost:3001/Checking_for_data',{
+        const serverres=await axios.post('https://lendin-1.onrender.com/Checking_for_data',{
             email : localStorage.getItem('Email')
         });
         if(serverres.data.is_true===false){
@@ -75,7 +75,7 @@ const Create_Ticket = () => {
   const Give_Score = async () => {
     try {
       const serverresponse = await axios.get(
-        'http://localhost:3001//GiveScoreToTicket',
+        'https://lendin-1.onrender.com/GiveScoreToTicket',
         {}
       )
     } catch (err) {

@@ -10,7 +10,7 @@ const See_Ticket = () => {
   useEffect(() => {
     const funcheck = async () => {
       try {
-        const checkToken = await axios.get('http://localhost:3001/checktoken', {
+        const checkToken = await axios.get('https://lend-8g9ih55s7-adit2002s-projects.vercel.app/checktoken', {
           headers: {
             Authorization: localStorage.getItem('token'),
           },
@@ -33,7 +33,7 @@ const See_Ticket = () => {
 
   const handleData = async () => {
     try {
-      const serverResponse = await axios.get('http://localhost:3001/SeeTicket')
+      const serverResponse = await axios.get('https://lend-8g9ih55s7-adit2002s-projects.vercel.app/SeeTicket')
       if (serverResponse.data.is_true === true) {
         // console.log('Data fetched')
         setTicketDataArray(serverResponse.data.JsonData)

@@ -12,7 +12,7 @@ const MetaMaskWalletComponent = () => {
     const email=localStorage.getItem('email');
     const tid=localStorage.getItem('tid');
     const funcheck = async () => {
-        const checkToken = await axios.get('http://localhost:3001/checktoken', {
+        const checkToken = await axios.get('https://lend-8g9ih55s7-adit2002s-projects.vercel.app/checktoken', {
           headers: {
             Authorization: localStorage.getItem('token'),
           },
@@ -25,7 +25,7 @@ const MetaMaskWalletComponent = () => {
         }
     }
     const GetId=async()=>{
-        const serverresponse=await axios.post('http://localhost:3001/getmmid',{
+        const serverresponse=await axios.post('https://lend-8g9ih55s7-adit2002s-projects.vercel.app/getmmid',{
             emails: email,
             tid: tid,
         });
