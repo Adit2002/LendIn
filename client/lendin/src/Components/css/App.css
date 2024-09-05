@@ -33,7 +33,7 @@ body {
   font-family: 'Copperplate Gothic', sans-serif;
 }
 .image-prelogin {
-  background-image: url('C:/Users/HP/Documents/GitHub/LendIn/client/lendin/src/images/LendIn.gif');
+  background-image: url('/src/images/Lend-In.png');
   background-size: cover;
   background-position: center;
   display: flex;
@@ -42,7 +42,7 @@ body {
   padding: 0;
 }
 .image-postlogin {
-  background-image: url('C:/Users/HP/Documents/GitHub/LendIn/client/lendin/src/images/after.gif');
+  background-image: url('/src/images/after.png');
   background-size: cover;
   background-position: center;
   text-align: center;
@@ -293,3 +293,36 @@ a:hover {
   box-shadow: 0 0 5px rgba(248, 251, 248, 0.5);
 }
 
+.guide-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* semi-transparent black background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999; /* ensure it's on top of other elements */
+}
+
+.guide-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* drop shadow effect */
+  max-width: 600px; /* adjust max width as needed */
+  max-height: 80vh; /* adjust max height as needed */
+  overflow-y: auto; /* enable vertical scrolling if content exceeds max height */
+}
+
+.guide-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  background-image: url('/src/images/x.jpg');
+  background-size: cover;
+}
