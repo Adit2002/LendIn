@@ -160,7 +160,9 @@ app.post("/Reg", async (req, res) => {
   }
 });
 
-
+app.get("/",(req,res)=>{
+  return res.status(200).send("Server running");
+});
 app.post("/Login", async (req, res) => {
   const gt = req.body.token.credential;
   const googletoken = jwtDecode(gt);
