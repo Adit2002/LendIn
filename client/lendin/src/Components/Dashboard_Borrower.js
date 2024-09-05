@@ -11,7 +11,7 @@ const Dashboard_Borrower = () => {
     setExp(!exp);
   }
   const funcheck = async () => {
-    const checkToken = await axios.get("http://localhost:3001/checktoken", {
+    const checkToken = await axios.get("https://lendin-1.onrender.com/checktoken", {
       headers: {
         Authorization: localStorage.getItem("token"),
       },

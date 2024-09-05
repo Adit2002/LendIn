@@ -4,7 +4,7 @@ import './css/general.css'
 const Dashboard_Investor = () => {
   const navigate = useNavigate()
   const funcheck = async () => {
-    const checkToken = await axios.get('http://localhost:3001/checktoken', {
+    const checkToken = await axios.get('https://lendin-1.onrender.com/checktoken', {
       headers: {
         Authorization: localStorage.getItem('token'),
       },
