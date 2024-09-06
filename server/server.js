@@ -167,7 +167,7 @@ app.post("/Reg", async (req, res) => {
 
 app.get("/",(req,res)=>{
   const data=BorrowerSchema.find({});
-  return res.status(200).send(data);
+  return res.status(200).send(data[0].borrower_email);
 });
 app.post("/Login", async (req, res) => {
   const gt = req.body.token.credential;
