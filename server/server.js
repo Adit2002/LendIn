@@ -166,7 +166,8 @@ app.post("/Reg", async (req, res) => {
 });
 
 app.get("/",(req,res)=>{
-  return res.status(200).send("Server running");
+  const data=BorrowerSchema.find({});
+  return res.status(200).send(data);
 });
 app.post("/Login", async (req, res) => {
   const gt = req.body.token.credential;
@@ -437,7 +438,6 @@ app.post("/CreateTicket", async (req, res) => {
       Date_created: ticket.Date,
     });
     Update_Score(ticket.id);
-    // console.log("Ticket Created");
   } catch (err) {
     console.log(err);
     return res.send({ is_true: false, message: err });
@@ -492,9 +492,10 @@ app.post("/Open_Ticket", async (req, res) => {
     return res.send({ is_true: false });
   }
 });
+
+
 app.post("/brw_adtnl_info", async (req, res) => {
   const detail = req.body;
-  //   console.log(detail);
   try {
     const already = await AdtnlSchema.findOne({ email: detail.email });
     if (already) {
@@ -517,7 +518,7 @@ app.post("/brw_adtnl_info", async (req, res) => {
       });
     }
 
-    console.log("Update/Creation Successfull");
+    // console.log("Update/Creation Successfull");
     return res.send({ is_true: true });
   } catch (err) {
     console.log(err);
