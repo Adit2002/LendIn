@@ -24,7 +24,7 @@ const Borrower_addtnl_info = () => {
     e.preventDefault()
     try {
       const serverresponse = await axios.post(
-        'http://localhost:3001/brw_adtnl_info',
+        'https://lend-in.vercel.app/brw_adtnl_info',
         {
           email: localStorage.getItem('Email'),
           income: e.target.annual_income.value,
