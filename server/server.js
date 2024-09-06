@@ -33,11 +33,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(json());
 app.use(
   cors({
-    origin: ["http://localhost:3000","https://lend-in.vercel.app/Login","https://lend-8g9ih55s7-adit2002s-projects.vercel.app/"],
+    origin: [
+      "http://localhost:3000",  
+      "https://lend-in.vercel.app",  
+      "https://lend-8g9ih55s7-adit2002s-projects.vercel.app/"
+    ],
     methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
+    credentials: true,  
   })
 );
+
 const verifyToken = (req, res, next) => {
   // Extract token from the Authorization header
   const token = req.headers.authorization;
