@@ -10,7 +10,7 @@ const See_Ticket = () => {
   useEffect(() => {
     const funcheck = async () => {
       try {
-        const checkToken = await axios.get('https://lend-8g9ih55s7-adit2002s-projects.vercel.app/checktoken', {
+        const checkToken = await axios.get('https://lendin-1.onrender.com/checktoken', {
           headers: {
             Authorization: localStorage.getItem('token'),
           },
