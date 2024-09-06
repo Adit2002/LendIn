@@ -33,7 +33,7 @@ const See_Ticket = () => {
 
   const handleData = async () => {
     try {
-      const serverResponse = await axios.get('https://lend-8g9ih55s7-adit2002s-projects.vercel.app/SeeTicket')
+      const serverResponse = await axios.get('https://lendin-1.onrender.com/SeeTicket')
       if (serverResponse.data.is_true === true) {
         // console.log('Data fetched')
         setTicketDataArray(serverResponse.data.JsonData)

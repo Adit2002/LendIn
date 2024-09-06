@@ -17,7 +17,7 @@ const MetaMaskComponent = () => {
 
     const funcheck = async () => {
         try {
-            const checkToken = await axios.get('https://lend-8g9ih55s7-adit2002s-projects.vercel.app/checktoken', {
+            const checkToken = await axios.get('https://lendin-1.onrender.com/checktoken', {
                 headers: {
                     Authorization: localStorage.getItem('token'),
                 },
@@ -55,7 +55,7 @@ const MetaMaskComponent = () => {
     const Submitrequest = async (ii) => {
         try {
           console.log(ii);
-            const serverresponse = await axios.post('http://localhost:3001/maskconnect', {
+            const serverresponse = await axios.post('https://lendin-1.onrender.com/maskconnect', {
                 email: email,
                 accid: ii,
                 role: role
