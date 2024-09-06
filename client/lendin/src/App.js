@@ -19,6 +19,7 @@ import Navbar from './Components/Navbar.js'
 import './Components/css/App.css';
 import PreReg from './Components/PreReg.js';
 import MetaMask from './Components/MetaMask.js'
+import Real from './Components/Real.js';
 function App() {
   return (
     <>
@@ -27,6 +28,7 @@ function App() {
         <Navbar></Navbar>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/Real" element={<Real />} />
           <Route path="/register_inv" element={<Register_Investor />} />
           <Route path="/register_brw" element={<Register_Borrower />} />
           <Route path="/Login" element={<Login />} />

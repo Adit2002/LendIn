@@ -8,8 +8,9 @@ body {
   background-size: 100% auto;
   display: flex;
   flex-direction: column;
-  min-height: calc(100vh - 6rem); 
+  /* min-height: calc(100vh - 6rem);  */
   width: 100%;
+  align-items: center;
   padding: 0;
   margin-top: 0;
   z-index: 2;
@@ -34,7 +35,7 @@ body {
 }
 .image-prelogin {
   /* background-image: url('/client/lendin/src/images/Lend-In.png'); */
-  background-color: #394756;
+  background-color: #a9e2e4;
   background-size: cover;
   background-position: center;
   display: flex;

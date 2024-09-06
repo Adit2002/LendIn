@@ -13,6 +13,7 @@ class Dataset {
   const PieOne = ({ data_ticketAll }) => {
     const chartRef = useRef(null);
   
+
     useEffect(() => {
       const datasets = [{
         label: 'Loan Details',
