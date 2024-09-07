@@ -6,6 +6,7 @@ body {
 }
 .page {
   background-size: 100% auto;
+  background-image: url('C:/Users/HP/Downloads/sun-tornado.svg');
   display: flex;
   flex-direction: column;
   /* min-height: calc(100vh - 6rem);  */
@@ -34,7 +35,7 @@ body {
   font-family: 'Copperplate Gothic', sans-serif;
 }
 .image-prelogin {
-  /* background-image: url('/client/lendin/src/images/Lend-In.png'); */
+  background-image: url('C:/Users/HP/Downloads/sun-tornado.svg');
   background-color: #a9e2e4;
   background-size: cover;
   background-position: center;
@@ -45,7 +46,7 @@ body {
 }
 .image-postlogin {
   /* background-image: url(''); */
-  background-color: #394756;
+  background-image: url('C:/Users/HP/Downloads/wavey-fingerprint.svg');
   background-size: cover;
   background-position: center;
   text-align: center;
