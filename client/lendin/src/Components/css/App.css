@@ -6,7 +6,7 @@ body {
 }
 .page {
   background-size: 100% auto;
-  background-image: url('C:/Users/HP/Downloads/sun-tornado.svg');
+  background-image: url('./sun-tornado.svg');
   display: flex;
   flex-direction: column;
   /* min-height: calc(100vh - 6rem);  */
