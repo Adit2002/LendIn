@@ -3,18 +3,18 @@
     align-items: center;
     text-align: center;
     padding: 10px 20px; 
-    border: 2px solid #0b0b0b; /* Border properties */
-    border-radius: 5px; /* Rounded corners */
-    background-color: #f7f1f1; /* Background color */
-    color: #0f1010; /* Text color */
+    border: 2px solid #0b0b0b; 
+    border-radius: 5px; 
+    background-color: #f7f1f1; 
+    color: #0f1010;
     font-size: large;
     font-family: 'Copperplate Gothic', sans-serif; /* Professional font */
     font-weight: bold;
   }
   
   .box-link:hover {
-    background-color: #0e0e0e;
-    color: white; /* Change background color on hover */
+    background-color: black;
+    color: white;
   }
   
   .metallic-heading {

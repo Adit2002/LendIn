@@ -3,6 +3,7 @@ import {
   Routes,
   Route
 } from 'react-router-dom';
+import { Suspense } from 'react';
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Home from './Components/Home'
 import Register_Investor from './Components/Register_Investor.js'
@@ -20,14 +21,18 @@ import './Components/css/App.css';
 import PreReg from './Components/PreReg.js';
 import MetaMask from './Components/MetaMask.js'
 import Real from './Components/Real.js';
+import About from './Components/About.js';
+import Fallback from './Components/Fallback.js';
 function App() {
   return (
     <>
+    <Suspense fallback={Fallback}>
     <GoogleOAuthProvider clientId="101828583772-7p3kgl83jtlcfp80eqg1u4m50sqr7g7m.apps.googleusercontent.com">
       <Router>
         <Navbar></Navbar>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/About" element={<About />} />
           <Route path="/Real" element={<Real />} />
           <Route path="/register_inv" element={<Register_Investor />} />
           <Route path="/register_brw" element={<Register_Borrower />} />
@@ -49,6 +54,7 @@ function App() {
         </Routes>
       </Router>
       </GoogleOAuthProvider>
+      </Suspense>
     </>
   )
 }

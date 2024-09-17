@@ -1,7 +1,7 @@
 .nav-bar {
   z-index: 1;
   background-image: linear-gradient(to right, rgb(11, 11, 10), rgb(21, 21, 21));
-  border-bottom: 3px solid rgb(252, 251, 248);
+  border-bottom: 2px solid rgba(255, 255, 255);
   width: 100%;
   height: 6rem;
   color: #cf7676;
@@ -73,8 +73,9 @@
   align-items: center;
 }
 .navbar-links li :hover {
-  background-color: whitesmoke;
-  color: #333;
+  /* background-color: whitesmoke; */
+  color: rgb(218, 92, 8);
+  text-decoration: underline;
 }
 .toggle {
   display: none;

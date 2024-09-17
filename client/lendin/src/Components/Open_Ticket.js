@@ -26,7 +26,7 @@ const Open_Ticket = () => {
   const Handle_Card = async () => {
     try {
       const serverresponse = await axios.post(
-        "https://lend-8g9ih55s7-adit2002s-projects.vercel.app/Open_Ticket",
+        "https://lendin-1.onrender.com/Open_Ticket",
         {
           tid: localStorage.getItem("tid"),
           email: localStorage.getItem("Email"),

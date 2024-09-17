@@ -45,8 +45,8 @@ body {
   padding: 0;
 }
 .image-postlogin {
-  /* background-image: url(''); */
-  background-image: url('./wavey-fingerprint.svg');
+  /* background-image: url('');  */
+  background-color: violet;
   background-size: cover;
   background-position: center;
   text-align: center;

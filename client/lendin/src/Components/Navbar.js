@@ -36,7 +36,7 @@ const Navbar = () => {
           </li>
         )}
         <li>
-          <NavLink to="/about">About</NavLink>
+          <NavLink to="/About">About</NavLink>
         </li>
         {isLoggedIn ? (
           <>

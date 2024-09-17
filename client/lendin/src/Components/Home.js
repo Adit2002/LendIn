@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const navigate = useNavigate();
+  // const await
 
   const handleclick = (s) => {
     localStorage.setItem('R', s);
